@@ -43,7 +43,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    DriveTrain driveTrain = new DriveTrain();
+    DriveTrain driveTrain = new DriveTrain(new VictorSP(RobotMap.BACK_LEFT_MOTOR),
+   new VictorSP(RobotMap.FRONT_LEFT_MOTOR), new VictorSP(RobotMap.BACK_RIGHT_MOTOR),
+    new VictorSP(RobotMap.FRONT_RIGHT_MOTOR), new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
+      new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());

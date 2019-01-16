@@ -9,9 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrain;
 
 public class DriveJoystick extends Command {
   XboxController xbox;
@@ -28,8 +26,8 @@ public class DriveJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    DriveTrain.SetPowerRight(this.xbox.getY(), OI.X());
-    DriveTrain.SetPowerLeft(OI.Y(), OI.X());
+    Robot.driveTrain.SetPowerRight(this.xbox.getY(), this.xbox.getX());
+    Robot.driveTrain.SetPowerLeft(this.xbox.getY(), this.xbox.getX());
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -41,8 +39,8 @@ public class DriveJoystick extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    DriveTrain.SetPowerRight(0,0);
-    DriveTrain.SetPowerLeft(0,0);
+    Robot.driveTrain.SetPowerRight(0,0);
+    Robot.driveTrain.SetPowerLeft(0,0);
   }
 
   // Called when another command which requires one or more of the same
