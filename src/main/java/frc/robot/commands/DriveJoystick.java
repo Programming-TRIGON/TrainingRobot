@@ -24,9 +24,7 @@ public class DriveJoystick extends Command {
 
   @Override
   protected void execute() {
-    // TODO: change to arcede drive
-    Robot.driveTrain.SetPowerRight(this.xbox.getY(), this.xbox.getX());
-    Robot.driveTrain.SetPowerLeft(this.xbox.getY(), this.xbox.getX());
+    Robot.driveTrain.arcadeDrive(this.xbox.getY(), this.xbox.getX());
   }
 
   @Override
@@ -37,8 +35,7 @@ public class DriveJoystick extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.SetPowerRight(0,0);
-    Robot.driveTrain.SetPowerLeft(0,0);
+    Robot.driveTrain.arcadeDrive(0,0);
   }
 
   // Called when another command which requires one or more of the same

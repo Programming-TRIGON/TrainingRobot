@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  XboxController xbox;
+  public XboxController xbox;
   public OI(){
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);

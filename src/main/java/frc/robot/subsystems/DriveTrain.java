@@ -9,8 +9,10 @@ package frc.robot.subsystems ;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Robot;
 import frc.robot.commands.DriveJoystick;
 
 
@@ -18,7 +20,7 @@ public class DriveTrain extends Subsystem {
   public SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
  // Gyro gyro;
-
+  DifferentialDrive differentialDrive;
 
 public DriveTrain(
   SpeedController rightBack, SpeedController rightFront, 
@@ -30,19 +32,16 @@ public DriveTrain(
   this.frontLeftMotor = leftFront;
   this.encoderRight = encoderRight;
   this.encoderLeft  = encoderLeft;
+
+  SpeedControllerGroup rightMotor = new SpeedControllerGroup(backRightMotor, frontRightMotor);
+  SpeedControllerGroup leftMotor = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
+  this.differentialDrive = new DifferentialDrive(leftMotor, rightMotor);
  // this.gyro = gyro;
 
 
 }
-
-  public void SetPowerRight(double x, double y){
-    backRightMotor.set(y - x);
-    frontRightMotor.set(y - x);
-  }
-
-  public void SetPowerLeft(double x, double y){
-    backLeftMotor.set((y + x)/2);
-    frontLeftMotor.set((y + x)/2);
+  public void arcadeDrive(double x, double y){
+    this.differentialDrive.arcadeDrive(x, y);
   }
 
   public double encRightTicks(){
@@ -59,7 +58,7 @@ public DriveTrain(
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveJoystick());
+    setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox));
   }
 
 }
