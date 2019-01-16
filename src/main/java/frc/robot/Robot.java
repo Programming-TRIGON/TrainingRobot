@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -29,6 +31,7 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  public static DriveTrain driveTrain;
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -40,11 +43,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    DriveTrain driveTrain = new DriveTrain(
-      new VictorSP(RobotMap.BACK_LEFT_MOTOR), new VictorSP(RobotMap.FRONT_LEFT_MOTOR),
-       new VictorSP(RobotMap.BACK_RIGHT_MOTOR), new VictorSP(RobotMap.FRONT_RIGHT_MOTOR),
-        new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B),
-          new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
+    DriveTrain driveTrain = new DriveTrain();
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());

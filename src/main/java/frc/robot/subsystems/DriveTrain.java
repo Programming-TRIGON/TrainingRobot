@@ -8,43 +8,42 @@
 package frc.robot.subsystems ;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.commands.DriveJoystick;
 
 /**
  * Add your docs here.
  */
 public class DriveTrain extends Subsystem {
-  SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
+  public static SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
  // Gyro gyro;
 
 
-public DriveTrain(
-   SpeedController backLeftMotor, SpeedController frontLeftMotor,
-     SpeedController backRightMotor, SpeedController frontRightMotor,
-       Encoder encoderRight, Encoder encoderLeft) {
-  this.backLeftMotor = backLeftMotor;
-  this.backRightMotor = backRightMotor;
-  this.frontLeftMotor = frontLeftMotor;
-  this.frontRightMotor = frontRightMotor;
-  this.encoderRight = encoderRight;
-  this.encoderLeft = encoderLeft;
+public DriveTrain() {
+  new VictorSP(RobotMap.BACK_LEFT_MOTOR);
+  new VictorSP(RobotMap.FRONT_LEFT_MOTOR);
+  new VictorSP(RobotMap.BACK_RIGHT_MOTOR);
+  new VictorSP(RobotMap.FRONT_RIGHT_MOTOR);
+  new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B);
+  new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B);
  // this.gyro = gyro;
 
 
 }
 
-  public void SetPowerRight(double power){
-    backRightMotor.set(power);
-    frontRightMotor.set(power);
+  public static void SetPowerRight(double x, double y){
+    backRightMotor.set(y - x);
+    frontRightMotor.set(y - x);
   }
 
-  public void SetPowerLeft(double power){
-    backLeftMotor.set(power);
-    frontLeftMotor.set(power);
+  public static void SetPowerLeft(double x, double y){
+    backLeftMotor.set((y + x)/2);
+    frontLeftMotor.set((y + x)/2);
   }
 
   public double encRightTicks(){
@@ -64,7 +63,9 @@ public DriveTrain(
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new DriveJoystick());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
 }
