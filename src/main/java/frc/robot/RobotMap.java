@@ -2,7 +2,6 @@
 package frc.robot;
 
 public class RobotMap {
-;
   public static final int ENCODER_RIGHT_A = 1;
   public static final int ENCODER_RIGHT_B = 2;
   public static final int ENCODER_LEFT_A = 3;

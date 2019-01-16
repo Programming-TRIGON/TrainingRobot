@@ -33,9 +33,9 @@ public DriveTrain(
   this.encoderRight = encoderRight;
   this.encoderLeft  = encoderLeft;
 
-  SpeedControllerGroup rightMotor = new SpeedControllerGroup(backRightMotor, frontRightMotor);
-  SpeedControllerGroup leftMotor = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
-  this.differentialDrive = new DifferentialDrive(leftMotor, rightMotor);
+  SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
+  SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
+  this.differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
  // this.gyro = gyro;
 
 
