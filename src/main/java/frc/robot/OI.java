@@ -18,17 +18,9 @@ import edu.wpi.first.wpilibj.buttons.Button;
  */
 public class OI {
   XboxController xbox;
-  public static Joystick leftStick;
-  double value;
+  public Joystick leftStick;
   public OI(){
     this.xbox = new XboxController(0);
     this.leftStick = new Joystick(1);
   }
-  public static double Y(){
-    return leftStick.getY();
-  }
-  public static double X(){
-    return leftStick.getX();
-  }
-
 }

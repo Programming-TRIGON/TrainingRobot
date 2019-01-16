@@ -19,12 +19,14 @@ import frc.robot.commands.DriveJoystick;
  * Add your docs here.
  */
 public class DriveTrain extends Subsystem {
-  public static SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
+  public SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
  // Gyro gyro;
 
 
-public DriveTrain() {
+public DriveTrain(SpeedController rightBack) {
+  this.backRightMotor = rightBack;
+
   new VictorSP(RobotMap.BACK_LEFT_MOTOR);
   new VictorSP(RobotMap.FRONT_LEFT_MOTOR);
   new VictorSP(RobotMap.BACK_RIGHT_MOTOR);

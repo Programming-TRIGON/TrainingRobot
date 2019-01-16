@@ -7,16 +7,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveJoystick extends Command {
-  public DriveJoystick() {
+  XboxController xbox;
+  public DriveJoystick(XboxController xbox) {
     requires(Robot.driveTrain);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    this.xbox = xbox;
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +28,7 @@ public class DriveJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    DriveTrain.SetPowerRight(OI.Y(), OI.X());
+    DriveTrain.SetPowerRight(this.xbox.getY(), OI.X());
     DriveTrain.SetPowerLeft(OI.Y(), OI.X());
   }
 
