@@ -9,22 +9,24 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 public class DriveJoystick extends Command {
   XboxController xbox;
-  public DriveJoystick(XboxController xbox) {
+  int invert;
+  public DriveJoystick(XboxController xbox, int invert) {
     requires(Robot.driveTrain);
     this.xbox = xbox;
+    this.invert = invert;
   }
 
   @Override
-  protected void initialize() {
-  }
+  protected void initialize() {}
 
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(this.xbox.getY(), this.xbox.getX());
+    Robot.driveTrain.arcadeDrive(invert*this.xbox.getY(), this.xbox.getX());
   }
 
   @Override

@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.DriveJoystick;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -15,8 +17,20 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class OI {
   public XboxController xbox;
+  public JoystickButton buttonA, buttonX;
+  public Boolean inverted;
   public OI(){
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);
+    this.buttonA = new JoystickButton(xbox, 1);
+    this.buttonX = new JoystickButton(xbox, 3);
+    if(inverted = true){
+      buttonA.whenPressed(new DriveJoystick(xbox, 1));
+      inverted = false;
+    }
+    else{
+      buttonA.whenPressed(new DriveJoystick(xbox, -1));
+      inverted = true;
+    }
   }
 }

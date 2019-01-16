@@ -50,7 +50,7 @@ public DriveTrain(
 
   public double encLeftTicks(){
     return encoderLeft.get();
-  }
+  } 
 
  /* public double gyroGet(){
     return gyro.getRate();
@@ -58,7 +58,7 @@ public DriveTrain(
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox));
+    setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox, 1));
   }
 
 }
