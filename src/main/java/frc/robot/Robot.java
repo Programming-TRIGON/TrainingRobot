@@ -18,9 +18,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveJoystick;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +28,6 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static DriveTrain driveTrain;
   public static OI m_oi;
 
@@ -41,15 +38,15 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
+
   @Override
   public void robotInit() {
-    DriveTrain driveTrain = new DriveTrain(new VictorSP(RobotMap.BACK_LEFT_MOTOR),
-   new VictorSP(RobotMap.FRONT_LEFT_MOTOR), new VictorSP(RobotMap.BACK_RIGHT_MOTOR),
-    new VictorSP(RobotMap.FRONT_RIGHT_MOTOR), new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
+    this.driveTrain = new DriveTrain(
+      new VictorSP(RobotMap.BACK_LEFT_MOTOR),new VictorSP(RobotMap.FRONT_LEFT_MOTOR), 
+      new VictorSP(RobotMap.BACK_RIGHT_MOTOR),new VictorSP(RobotMap.FRONT_RIGHT_MOTOR), 
+      new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
       new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
 

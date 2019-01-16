@@ -20,7 +20,10 @@ public class DriveTrain extends Subsystem {
  // Gyro gyro;
 
 
-public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedController leftBack, SpeedController leftFront, Encoder encoderRight, Encoder encoderLeft) {
+public DriveTrain(
+  SpeedController rightBack, SpeedController rightFront, 
+  SpeedController leftBack, SpeedController leftFront, 
+  Encoder encoderRight, Encoder encoderLeft) {
   this.backRightMotor = rightBack;
   this.frontRightMotor = rightFront;
   this.backLeftMotor = leftBack;
@@ -56,7 +59,7 @@ public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedCo
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveJoystick(new XboxController(0)));
+    setDefaultCommand(new DriveJoystick());
   }
 
 }

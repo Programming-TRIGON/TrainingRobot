@@ -18,19 +18,17 @@ public class DriveJoystick extends Command {
     this.xbox = xbox;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // TODO: change to arcede drive
     Robot.driveTrain.SetPowerRight(this.xbox.getY(), this.xbox.getX());
     Robot.driveTrain.SetPowerLeft(this.xbox.getY(), this.xbox.getX());
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
@@ -47,5 +45,6 @@ public class DriveJoystick extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    this.end();
   }
 }
