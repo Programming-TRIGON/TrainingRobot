@@ -17,10 +17,11 @@ import frc.robot.commands.DriveJoystick;
 
 
 public class DriveTrain extends Subsystem {
-  public SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
+  SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
  // Gyro gyro;
   DifferentialDrive differentialDrive;
+  boolean inverted = false;
 
 public DriveTrain(
   SpeedController rightBack, SpeedController rightFront, 
@@ -55,10 +56,14 @@ public DriveTrain(
  /* public double gyroGet(){
     return gyro.getRate();
   } */ 
-
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox, 1));
+    setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox));
   }
-
+  public void toggleInverted(){
+    this.inverted = !this.inverted;
+  }
+  public boolean isInverted(){
+    return this.inverted;
+  }
 }

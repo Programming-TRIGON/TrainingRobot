@@ -7,42 +7,41 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveJoystick extends Command {
-  XboxController xbox;
-  public DriveJoystick(XboxController xbox) {
+public class ToggleInverted extends Command {
+  
+  public ToggleInverted() {
     requires(Robot.driveTrain);
-    this.xbox = xbox;
+
   }
 
+  // Called just before this Command runs the first time
   @Override
-  protected void initialize() {}
+  protected void initialize() {
+    Robot.driveTrain.toggleInverted();
+  }
 
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(
-      Robot.driveTrain.isInverted() ? -1 * this.xbox.getY(Hand.kLeft) :1 * this.xbox.getY(Hand.kLeft), this.xbox.getX(Hand.kLeft));
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.arcadeDrive(0,0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    this.end();
   }
 }
