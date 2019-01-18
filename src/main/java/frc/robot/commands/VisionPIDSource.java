@@ -37,17 +37,17 @@ public class VisionPIDSource implements PIDSource {
 
     public double runListenerNetworkTable(){
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-         // TODO: find which table we are using to upload vision target dircetion
+         // TODO: find which table we are using to upload vision target dircetions
         NetworkTable TargetTable = inst.getTable("VisionTable");
         String TargetKey;
-        switch (VisionTarget){
-            case VisionTarget.kRetroflector: TargetKey = "hatchDirection"; break;
-            case VisionTarget.kCargo: TargetKey = "hatchDirection"; break;
-            case VisionTarget.kLine: TargetKey = "hatchDirection"; break;
-            default: VisionTarget.kHatch TargetKey = "hatchDirection"; break;
+        switch (target){
+            case kRetroflector: TargetKey = "retroflectorDirection"; break;
+            case kCargo: TargetKey = "cargoDirection"; break;
+            case kLine: TargetKey = "lineDirection"; break;
+            default: TargetKey = "hatchDirection"; break;
         }
         NetworkTableEntry TargetEntry = TargetTable.getEntry(TargetKey);
-        return
+        return;
     }
 
     public static enum VisionTarget {
