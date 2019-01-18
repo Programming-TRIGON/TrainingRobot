@@ -10,15 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-enum Target{
-  kHatch, kCargo, kRetroflector, kLine;
-}
+
 
 public class TrackVisionTarget extends Command {
   
-  Target target;
+  public static enum VisionTarget {
+    kHatch, kCargo, kRetroflector, kLine;
+  }
 
-  public TrackVisionTarget(Target target) {
+  VisionTarget target;
+
+  public TrackVisionTarget(VisionTarget target) {
     this.target=target;
     requires(Robot.driveTrain);
   }
@@ -32,7 +34,7 @@ public class TrackVisionTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(, 0);
+    Robot.driveTrain.arcadeDrive(0, 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

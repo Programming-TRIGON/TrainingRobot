@@ -12,16 +12,18 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.TrackVisionTarget;
 
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 public class OI {
   public XboxController xbox;
   Button XButton = new JoystickButton(this.xbox, 1);
   public OI(){
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);
-    XButton.whileHeld(TrackVisionTarget());
+    XButton.whileHeld(new TrackVisionTarget(TrackVisionTarget.VisionTarget.kHatch));
   }
 }
