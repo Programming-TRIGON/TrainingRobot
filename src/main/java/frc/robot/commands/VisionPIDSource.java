@@ -17,9 +17,29 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class VisionPIDSource implements PIDSource {
 
     VisionTarget target;
+    NetworkTableEntry visionEntry;
 
     public VisionPIDSource(VisionTarget target) {
         this.target = target;
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        // TODO: find which table we are using to upload vision target dircetions
+        NetworkTable targeTable = inst.getTable("VisionTable");
+        String targetKey;
+        switch (target) {
+        case kRetroflector:
+            targetKey = "retroflectorDirection";
+            break;
+        case kCargo:
+            targetKey = "cargoDirection";
+            break;
+        case kLine:
+            targetKey = "lineDirection";
+            break;
+        default:
+            targetKey = "hatchDirection";
+            break;
+        }
+        this.visionEntry = targeTable.getEntry(targetKey);
     }
 
     @Override
@@ -34,35 +54,11 @@ public class VisionPIDSource implements PIDSource {
 
     @Override
     public double pidGet() {
-        return 0;
+        if(this.visionEntry==null)
+            return 0;
+        return this.visionEntry.getDouble(0);
     }
 
-    public double runListenerNetworkTable() {
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        // TODO: find which table we are using to upload vision target dircetions
-        NetworkTable TargetTable = inst.getTable("VisionTable");
-        String TargetKey;
-        switch (target) {
-        case kRetroflector:
-            TargetKey = "retroflectorDirection";
-            break;
-        case kCargo:
-            TargetKey = "cargoDirection";
-            break;
-        case kLine:
-            TargetKey = "lineDirection";
-            break;
-        default:
-            TargetKey = "hatchDirection";
-            break;
-        }
-        NetworkTableEntry TargetEntry = TargetTable.getEntry(TargetKey);
-        inst.startClientTeam(5990);
-        TargetEntry.addListener(event -> {
-        }, EntryListenerFlags.kUpdate | EntryListenerFlags.kNew);
-        
-        return;
-    }
 
     public static enum VisionTarget {
         kHatch, kCargo, kRetroflector, kLine;
