@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.TrackVisionTarget;
@@ -20,10 +21,14 @@ import frc.robot.commands.TrackVisionTarget;
 
 public class OI {
   public XboxController xbox;
-  Button XButton = new JoystickButton(this.xbox, 1);
+  Button XButton;
   public OI(){
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);
+    this.XButton = new JoystickButton(this.xbox, 1);
     XButton.whileHeld(new TrackVisionTarget(TrackVisionTarget.VisionTarget.kHatch));
+  }
+  public double getX(){
+    return xbox.getX(Hand.kLeft);
   }
 }
