@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.TrackVisionTarget;
+import frc.robot.commands.VisionPIDSource;
 
 
 /**
@@ -24,6 +25,6 @@ public class OI {
   public OI(){
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);
-    XButton.whileHeld(new TrackVisionTarget(TrackVisionTarget.VisionTarget.kHatch));
+    XButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch));
   }
 }

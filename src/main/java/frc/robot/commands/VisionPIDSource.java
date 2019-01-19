@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class VisionPIDSource implements PIDSource {
 
     VisionTarget target;
-
+    NetworkTableEntry visionEntry;
     public VisionPIDSource(VisionTarget target) {
         this.target = target;
     }
@@ -39,29 +39,43 @@ public class VisionPIDSource implements PIDSource {
 
     public double runListenerNetworkTable() {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        
         // TODO: find which table we are using to upload vision target dircetions
-        NetworkTable TargetTable = inst.getTable("VisionTable");
-        String TargetKey;
+        NetworkTable targetTable = inst.getTable("VisionTable");
+        
+        String targetKey;
         switch (target) {
         case kRetroflector:
-            TargetKey = "retroflectorDirection";
+            targetKey = "retroflectorDirection";
             break;
         case kCargo:
-            TargetKey = "cargoDirection";
+            targetKey = "cargoDirection";
             break;
         case kLine:
-            TargetKey = "lineDirection";
+            targetKey = "lineDirection";
             break;
         default:
-            TargetKey = "hatchDirection";
+            targetKey = "hatchDirection";
             break;
         }
-        NetworkTableEntry TargetEntry = TargetTable.getEntry(TargetKey);
+        NetworkTableEntry targetEntry = targetTable.getEntry(targetKey);
+        this.visionEntry = targetEntry;
         inst.startClientTeam(5990);
-        TargetEntry.addListener(event -> {
+        targetEntry.addListener(event -> {
         }, EntryListenerFlags.kUpdate | EntryListenerFlags.kNew);
-        
+
+        targetEntry.removeListener(0);
         return;
+    }
+
+    public void removeListener() {
+        try{
+
+        this.visionEntry.removeListener(0);
+        }
+        catch(Exception e){
+            System.out.println();
+        }
     }
 
     public static enum VisionTarget {
