@@ -18,31 +18,12 @@ public class VisionPIDSource implements PIDSource {
 
     VisionTarget target;
     NetworkTableEntry visionEntry;
+
     public VisionPIDSource(VisionTarget target) {
         this.target = target;
-    }
-
-    @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
-
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-    }
-
-    @Override
-    public double pidGet() {
-        return 0;
-    }
-
-    public double runListenerNetworkTable() {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        
         // TODO: find which table we are using to upload vision target dircetions
-        NetworkTable targetTable = inst.getTable("VisionTable");
-        
+        NetworkTable targeTable = inst.getTable("VisionTable");
         String targetKey;
         switch (target) {
         case kRetroflector:
@@ -58,25 +39,26 @@ public class VisionPIDSource implements PIDSource {
             targetKey = "hatchDirection";
             break;
         }
-        NetworkTableEntry targetEntry = targetTable.getEntry(targetKey);
-        this.visionEntry = targetEntry;
-        inst.startClientTeam(5990);
-        targetEntry.addListener(event -> {
-        }, EntryListenerFlags.kUpdate | EntryListenerFlags.kNew);
-
-        targetEntry.removeListener(0);
-        return;
+        this.visionEntry = targeTable.getEntry(targetKey);
     }
 
-    public void removeListener() {
-        try{
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
 
-        this.visionEntry.removeListener(0);
-        }
-        catch(Exception e){
-            System.out.println();
-        }
     }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        return PIDSourceType.kDisplacement;
+    }
+
+    @Override
+    public double pidGet() {
+        if(this.visionEntry==null)
+            return 0;
+        return this.visionEntry.getDouble(0);
+    }
+
 
     public static enum VisionTarget {
         kHatch, kCargo, kRetroflector, kLine;
