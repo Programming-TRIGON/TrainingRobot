@@ -28,7 +28,6 @@ public class OI {
     this.xbox = new XboxController(0);
     this.XButton = new JoystickButton(this.xbox, 1);
     XButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch));
-
   }
   public double getX(){
     return xbox.getX(Hand.kLeft);

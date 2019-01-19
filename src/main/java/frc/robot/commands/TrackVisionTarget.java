@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.JoystickPIDSource;
 import frc.robot.Robot;
 
 
@@ -31,7 +32,8 @@ public class TrackVisionTarget extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    VisionPIDSource visionPIDSource = new VisionPIDSource(this.target); 
+    //VisionPIDSource visionPIDSource = new VisionPIDSource(this.target); 
+    JoystickPIDSource joystickPIDSource = new JoystickPIDSource(); 
     PIDOutput visionPIDOutput = new PIDOutput(){
     
       @Override
@@ -40,7 +42,7 @@ public class TrackVisionTarget extends Command {
       }
     };
 
-    visionPIDController = new PIDController(0.4, 0, 0, visionPIDSource, visionPIDOutput);
+    visionPIDController = new PIDController(0.4, 0, 0, joystickPIDSource, visionPIDOutput);
     visionPIDController.setSetpoint(0);
     visionPIDController.enable();
   }
