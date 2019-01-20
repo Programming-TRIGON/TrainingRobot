@@ -14,6 +14,7 @@ import frc.robot.Robot;
 
 public class EncoderPID extends Command {
   PIDController encoderPIDController;
+  PIDOutput encoderPIDOutput;
 
   public EncoderPID() {
     requires(Robot.driveTrain);
@@ -23,18 +24,18 @@ public class EncoderPID extends Command {
   @Override
   protected void initialize() {
 
-}
+  }
 
   @Override
-  protected void execute() { 
-       PIDOutput encoderPIDOutput = new PIDOutput(){
+  protected void execute() {
+    PIDOutput encoderPIDOutput = new PIDOutput() {
       public void pidWrite(double output) {
         Robot.driveTrain.arcadeDrive(output, 0);
-      
-    }
-  };
-  
-    PIDController encoderPIDController = new PIDController(0.2, 0, 0, Robot.encoderPIDSource, encoderPIDOutput);
+
+      }
+    };
+
+    PIDController encoderPIDController = new PIDController(0.2, 0, 0, Robot.encoderPIDSource, this.encoderPIDOutput);
     encoderPIDController.setSetpoint(1000);
     encoderPIDController.setAbsoluteTolerance(25);
     encoderPIDController.setOutputRange(-1, 1);
