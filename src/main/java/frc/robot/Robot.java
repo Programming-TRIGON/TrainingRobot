@@ -10,9 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 
@@ -26,7 +24,7 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static OI m_oi;
-
+  public static EncoderPIDSource encoderPIDSource;
 
 
   /**
@@ -42,6 +40,7 @@ public class Robot extends TimedRobot {
       new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
       new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
     m_oi = new OI();
+    Robot.encoderPIDSource = new EncoderPIDSource();
   }
 
   /**
