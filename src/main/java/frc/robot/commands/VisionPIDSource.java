@@ -23,7 +23,7 @@ public class VisionPIDSource implements PIDSource {
         this.target = target;
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         // TODO: find which table we are using to upload vision target dircetions
-        NetworkTable targeTable = inst.getTable("VisionTable");
+        NetworkTable targeTable = inst.getTable("ImageProcessing");
         String targetKey;
         switch (target) {
         case kRetroflector:
@@ -54,7 +54,7 @@ public class VisionPIDSource implements PIDSource {
 
     @Override
     public double pidGet() {
-        double imgWidth = 320; //important to know if the target on the middle of the image 
+        double imgWidth = 2000; //important to know if the target on the middle of the image 
         if(this.visionEntry==null)
             return 0;
         return (this.visionEntry.getDouble(0)/(imgWidth/2))-1; //give the pid controller value between -1 and 1

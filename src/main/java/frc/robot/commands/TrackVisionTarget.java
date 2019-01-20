@@ -17,10 +17,6 @@ import frc.robot.Robot;
 
 public class TrackVisionTarget extends Command {
   
-  public static enum VisionTarget {
-    kHatch, kCargo, kRetroflector, kLine;
-  }
-
   VisionPIDSource.VisionTarget target;
   PIDController visionPIDController;
 
