@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.subsystems.DriveTrain;
+import com.spikes2212.dashboard.DashBoardController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public DashBoardController dbc;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -48,6 +50,7 @@ public class Robot extends TimedRobot {
       new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
     m_oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
+    this.dbc = new DashBoardController();
   }
 
   /**
@@ -60,6 +63,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    this.dbc.update();
   }
 
   /**

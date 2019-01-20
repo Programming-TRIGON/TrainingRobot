@@ -24,7 +24,7 @@ public class DriveJoystick extends Command {
 
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(this.xbox.getY(), this.xbox.getX());
+    Robot.driveTrain.arcadeDrive(this.xbox.getX(), this.xbox.getY());
   }
 
   @Override

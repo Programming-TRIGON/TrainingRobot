@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionPIDSource implements PIDSource {
 
@@ -23,20 +24,20 @@ public class VisionPIDSource implements PIDSource {
         this.target = target;
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         // TODO: find which table we are using to upload vision target dircetions
-        NetworkTable targeTable = inst.getTable("ImageProcessing");
+        NetworkTable targeTable = inst.getTable("SmartDashboard");
         String targetKey;
         switch (target) {
         case kRetroflector:
-            targetKey = "retroflectorDirection";
+            targetKey = "RetroflectorDirection";
             break;
         case kCargo:
-            targetKey = "cargoDirection";
+            targetKey = "CargoDirection";
             break;
         case kLine:
-            targetKey = "lineDirection";
+            targetKey = "LineDirection";
             break;
         default:
-            targetKey = "hatchDirection";
+            targetKey = "HatchDirection";
             break;
         }
         this.visionEntry = targeTable.getEntry(targetKey);
@@ -55,9 +56,13 @@ public class VisionPIDSource implements PIDSource {
     @Override
     public double pidGet() {
         double imgWidth = 2000; //important to know if the target on the middle of the image 
+        SmartDashboard.putNumber("target direction", this.visionEntry.getDouble(9999));
         if(this.visionEntry==null)
             return 0;
-        return (this.visionEntry.getDouble(0)/(imgWidth/2))-1; //give the pid controller value between -1 and 1
+        if(this.visionEntry.getDouble(9999)==9999.0)
+            return 0;
+        return (-this.visionEntry.getDouble(0)/(imgWidth/2))+1; //give the pid controller value between -1 and 1
+        //return -this.visionEntry.getDouble(0) - 1000;
     }
 
 

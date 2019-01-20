@@ -41,7 +41,7 @@ public DriveTrain(
 
 }
   public void arcadeDrive(double x, double y){
-    this.differentialDrive.arcadeDrive(x, y);
+    this.differentialDrive.arcadeDrive(y, x);
   }
 
   public double encRightTicks(){
