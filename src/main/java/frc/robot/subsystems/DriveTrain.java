@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems ;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -15,55 +15,78 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
 import frc.robot.commands.DriveJoystick;
 
-
 public class DriveTrain extends Subsystem {
   SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
- // Gyro gyro;
+  // Gyro gyro;
   DifferentialDrive differentialDrive;
   boolean inverted = false;
+  boolean sensitivityY = false;
+  boolean sensitivityX = false;
 
-public DriveTrain(
-  SpeedController rightBack, SpeedController rightFront, 
-  SpeedController leftBack, SpeedController leftFront, 
-  Encoder encoderRight, Encoder encoderLeft) {
-  this.backRightMotor = rightBack;
-  this.frontRightMotor = rightFront;
-  this.backLeftMotor = leftBack;
-  this.frontLeftMotor = leftFront;
-  this.encoderRight = encoderRight;
-  this.encoderLeft  = encoderLeft;
+  public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedController leftBack,
+      SpeedController leftFront, Encoder encoderRight, Encoder encoderLeft) {
+    this.backRightMotor = rightBack;
+    this.frontRightMotor = rightFront;
+    this.backLeftMotor = leftBack;
+    this.frontLeftMotor = leftFront;
+    this.encoderRight = encoderRight;
+    this.encoderLeft = encoderLeft;
 
-  SpeedControllerGroup rightMotor = new SpeedControllerGroup(backRightMotor, frontRightMotor);
-  SpeedControllerGroup leftMotor = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
-  this.differentialDrive = new DifferentialDrive(leftMotor, rightMotor);
- // this.gyro = gyro;
+    SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
+    SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
+    this.differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+    // this.gyro = gyro;
 
+  }
 
-}
-  public void arcadeDrive(double x, double y){
+  public void arcadeDrive(double x, double y) {
     this.differentialDrive.arcadeDrive(x, y);
   }
 
-  public double encRightTicks(){
+  public double encRightTicks() {
     return encoderRight.get();
   }
 
-  public double encLeftTicks(){
+  public double encLeftTicks() {
     return encoderLeft.get();
-  } 
+  }
 
- /* public double gyroGet(){
-    return gyro.getRate();
-  } */ 
+  /*
+   * public double gyroGet(){ return gyro.getRate(); }
+   */
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox));
   }
-  public void toggleInverted(){
+
+  public void toggleInverted() {
     this.inverted = !this.inverted;
   }
-  public boolean isInverted(){
+
+  public boolean isInverted() {
     return this.inverted;
+  }
+  public void setSensitivityX(){
+    if (Robot.m_oi.xbox.getX() < 0.02 && Robot.m_oi.xbox.getX() > -0.02 ) {
+      this.sensitivityX = true;
+    }
+    else{
+      this.sensitivityX = false;
+    }
+  }
+  public void setSensitivityY(){
+    if (Robot.m_oi.xbox.getY() < 0.02 && Robot.m_oi.xbox.getY() > -0.02 ) {
+      this.sensitivityY = true;
+    }
+    else{
+      this.sensitivityY = false;
+    }
+  }
+  public boolean isSensitivityX(){
+    return this.sensitivityX;
+  }
+  public boolean isSensitivityY(){
+    return this.sensitivityY;
   }
 }
