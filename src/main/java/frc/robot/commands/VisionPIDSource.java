@@ -21,13 +21,13 @@ public class VisionPIDSource implements PIDSource {
     NetworkTableEntry visionEntry;
     double imgWidth = 2000; //important to know if the target on the middle of the image 
 
-    public VisionPIDSource(VisionTarget target,VisionDirectionType type) {
+    public VisionPIDSource(VisionTarget target, VisionDirectionType type) {
         this.target = target;
         this.type = type;
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         // TODO: find which table we are using to upload vision target dircetions
         NetworkTable targeTable = inst.getTable("SmartDashboard");
-        this.visionEntry = targeTable.getEntry(target.key);
+        this.visionEntry = targeTable.getEntry("HatchDirection");
     }
 
     @Override
@@ -44,19 +44,18 @@ public class VisionPIDSource implements PIDSource {
     public double pidGet() {
         if(this.visionEntry==null)
             return 0;
-        String targetLocation = this.visionEntry.getString("9999 9999");
+        String targetLocation = this.visionEntry.getString("9999");
+        if(targetLocation.equals("9999"))
+            return 9999;
         String[] locations = targetLocation.split(" ");
         double x = Double.parseDouble(locations[type.key]);
         // double y = Double.parseDouble(locations[1]);
-        SmartDashboard.putNumber("target direction "+type.toString(), x);
+        SmartDashboard.putNumber("target direction " + type.toString(), x);
         // SmartDashboard.putNumber("target direction y", y);
-        if(targetLocation.equals("9999 9999"))
-            return 0;
         
         return (-x/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
         //return -this.visionEntry.getDouble(0) - 1000;
     }
-
 
     public static enum VisionTarget {
         kHatch("RetroflectorDirection"),

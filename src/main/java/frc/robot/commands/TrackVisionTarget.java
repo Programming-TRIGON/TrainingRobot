@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.commands.VisionPIDSource.VisionDirectionType;
 
 import java.util.function.Supplier;
 
@@ -23,7 +24,7 @@ import com.spikes2212.dashboard.ConstantHandler;
 public class TrackVisionTarget extends Command {
   
   VisionPIDSource.VisionTarget target;
-  PIDController visionPIDController;
+  PIDController visionXPIDController, visionYPIDController;
 
   final Supplier<Double> kP = ConstantHandler.addConstantDouble("kP", 0.7);
   final Supplier<Double> kI = ConstantHandler.addConstantDouble("kI", 0.7);
@@ -42,23 +43,50 @@ public class TrackVisionTarget extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    VisionPIDSource visionPIDSource = new VisionPIDSource(this.target); 
-    //JoystickPIDSource joystickPIDSource = new JoystickPIDSource(); 
-    PIDOutput visionPIDOutput = new PIDOutput(){
+    VisionPIDSource visionXPIDSource = new VisionPIDSource(this.target, VisionDirectionType.x); 
+    //JoystickPIDSource joystickPIDSource = new JoystickPIDSource();
+    VisionPIDSource visionYPIDSource = new VisionPIDSource(this.target, VisionDirectionType.y);
+    XboxController xbox = this.xbox;
+    PIDOutput visionXPIDOutput = new PIDOutput(){
     
       @Override
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(output, xbox.getY(Hand.kLeft), true);
+        if(visionXPIDSource.pidGet()!=9999){
+          Robot.driveTrain.arcadeDrive(output, -xbox.getY(Hand.kLeft), true);
+        } else {
+          double y = -xbox.getY(Hand.kLeft);
+          Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), y, Math.abs(y) <= 0.50);
+        }
       }
     };
+    /*PIDOutput visionYPIDOutput = new PIDOutput(){
+    
+      @Override
+      public void pidWrite(double output) {
+        if(visionXPIDSource.pidGet()!=9999){
+          Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), -output, true);
+        } else {
+          double y = -xbox.getY(Hand.kLeft);
+          Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), y, Math.abs(y) <= 0.50);
+        }
+      }
+    };*/
 
-    visionPIDController = new PIDController(this.kP.get(), this.kI.get(), this.kD.get(), 
-    visionPIDSource, visionPIDOutput);
-    visionPIDController.setAbsoluteTolerance(this.tolerance.get());
-    visionPIDController.setSetpoint(this.SETPOINT);
-    visionPIDController.setOutputRange(-1, 1);
-    visionPIDController.setInputRange(-1, 1);
-    visionPIDController.enable();
+    visionXPIDController = new PIDController(this.kP.get(), this.kI.get(), this.kD.get(), 
+    visionXPIDSource, visionXPIDOutput);
+    visionXPIDController.setAbsoluteTolerance(this.tolerance.get());
+    visionXPIDController.setSetpoint(this.SETPOINT);
+    visionXPIDController.setOutputRange(-1, 1);
+    visionXPIDController.setInputRange(-1, 1);
+    visionXPIDController.enable();
+    
+    /*visionYPIDController = new PIDController(this.kP.get(), this.kI.get(), this.kD.get(), 
+    visionXPIDSource, visionYPIDOutput);
+    visionYPIDController.setAbsoluteTolerance(this.tolerance.get());
+    visionYPIDController.setSetpoint(this.SETPOINT);
+    visionYPIDController.setOutputRange(-1, 1);
+    visionYPIDController.setInputRange(-1, 1);
+    visionYPIDController.enable();*/
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -82,6 +110,6 @@ public class TrackVisionTarget extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    visionPIDController.disable();
+    visionXPIDController.disable();
   }
 }
