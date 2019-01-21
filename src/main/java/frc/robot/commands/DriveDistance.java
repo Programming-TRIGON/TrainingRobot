@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class EncoderPID extends Command {
-  PIDController encoderPIDController;
-  PIDOutput encoderPIDOutput;
+public class DriveDistance extends Command {
+  PIDController DriveDistanceController;
+  PIDOutput DriveDistanceOutput;
 
-  public EncoderPID() {
+  public DriveDistance() {
     requires(Robot.driveTrain);
   }
 
@@ -28,30 +28,31 @@ public class EncoderPID extends Command {
 
   @Override
   protected void execute() {
-    PIDOutput encoderPIDOutput = new PIDOutput() {
+    PIDOutput DriveDistanceOutput = new PIDOutput() {
       public void pidWrite(double output) {
         Robot.driveTrain.arcadeDrive(output, 0);
-
       }
     };
 
-    PIDController encoderPIDController = new PIDController(0.2, 0, 0, Robot.encoderPIDSource, this.encoderPIDOutput);
-    encoderPIDController.setSetpoint(1000);
-    encoderPIDController.setAbsoluteTolerance(25);
-    encoderPIDController.setOutputRange(-1, 1);
-    encoderPIDController.enable();
+    PIDController DriveDistanceController = new PIDController(0.2, 0, 0, 
+    Robot.DriveDistanceSource, this.DriveDistanceOutput);
+
+    DriveDistanceController.setSetpoint(1000);
+    DriveDistanceController.
+    DriveDistanceController.setOutputRange(-1, 1);
+    DriveDistanceController.enable();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return DriveDistanceController.onTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    encoderPIDController.disable();
+    DriveDistanceController.disable();
     Robot.driveTrain.arcadeDrive(0, 0);
   }
 
