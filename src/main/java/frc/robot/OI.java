@@ -25,7 +25,7 @@ public class OI {
     this.buttonA = new JoystickButton(xbox, 1);
     this.buttonX = new JoystickButton(xbox, 3);
     buttonY.whenPressed(new ToggleInverted());
-    buttonA.whenPressed(new DriveDistance(0.5, 0.2, 0.05));
-    buttonX.whenPressed(new DriveDistance(1, 0.2, 0.1));
+    buttonA.whenPressed(new DriveDistance(0.5));
+    buttonX.whenPressed(new DriveDistance(1));
   }
 }

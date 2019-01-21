@@ -24,7 +24,6 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static OI m_oi;
-  public static TwoEncoderPIDSource twoEncoderPIDSource;
 
 
   /**
