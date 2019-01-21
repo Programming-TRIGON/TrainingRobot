@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
     this.dbc = new DashBoardController();
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     this.dbc.update();
+    
   }
 
   /**
