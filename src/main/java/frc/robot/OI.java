@@ -27,7 +27,7 @@ public class OI {
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);
     this.XButton = new JoystickButton(this.xbox, 1);
-    XButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch));
+    XButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch, this.xbox));
   }
   public double getX(){
     return xbox.getX(Hand.kLeft);

@@ -19,7 +19,6 @@ import frc.robot.commands.DriveJoystick;
 public class DriveTrain extends Subsystem {
   public SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
- // Gyro gyro;
   DifferentialDrive differentialDrive;
 
 public DriveTrain(
@@ -44,6 +43,10 @@ public DriveTrain(
     this.differentialDrive.arcadeDrive(y, x);
   }
 
+  public void arcadeDrive(double x, double y, boolean cheesyDrive){
+    this.differentialDrive.curvatureDrive(y, x, cheesyDrive);
+  }
+
   public double encRightTicks(){
     return encoderRight.get();
   }
@@ -51,10 +54,6 @@ public DriveTrain(
   public double encLeftTicks(){
     return encoderLeft.get();
   }
-
- /* public double gyroGet(){
-    return gyro.getRate();
-  } */ 
 
   @Override
   public void initDefaultCommand() {

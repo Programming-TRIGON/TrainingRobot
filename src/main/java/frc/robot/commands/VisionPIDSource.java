@@ -18,6 +18,7 @@ public class VisionPIDSource implements PIDSource {
 
     VisionTarget target;
     NetworkTableEntry visionEntry;
+    double imgWidth = 2000; //important to know if the target on the middle of the image 
 
     public VisionPIDSource(VisionTarget target) {
         this.target = target;
@@ -54,13 +55,12 @@ public class VisionPIDSource implements PIDSource {
 
     @Override
     public double pidGet() {
-        double imgWidth = 2000; //important to know if the target on the middle of the image 
         SmartDashboard.putNumber("target direction", this.visionEntry.getDouble(9999));
         if(this.visionEntry==null)
             return 0;
         if(this.visionEntry.getDouble(9999)==9999.0)
             return 0;
-        return (-this.visionEntry.getDouble(0)/(imgWidth/2))+1; //give the pid controller value between -1 and 1
+        return (-this.visionEntry.getDouble(0)/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
         //return -this.visionEntry.getDouble(0) - 1000;
     }
 

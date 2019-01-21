@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -29,9 +31,11 @@ public class TrackVisionTarget extends Command {
   final Supplier<Double> tolerance = ConstantHandler.addConstantDouble("tolerance", 0.7);
 
   final int SETPOINT = 0;
+  XboxController xbox;
 
-  public TrackVisionTarget(VisionPIDSource.VisionTarget target) {
+  public TrackVisionTarget(VisionPIDSource.VisionTarget target, XboxController xbox) {
     this.target=target;
+    this.xbox=xbox;
     requires(Robot.driveTrain);
   }
 
@@ -44,7 +48,7 @@ public class TrackVisionTarget extends Command {
     
       @Override
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(output, 0);
+        Robot.driveTrain.arcadeDrive(output, xbox.getY(Hand.kLeft), true);
       }
     };
 
