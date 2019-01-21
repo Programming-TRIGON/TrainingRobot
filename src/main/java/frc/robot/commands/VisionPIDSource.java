@@ -17,30 +17,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class VisionPIDSource implements PIDSource {
 
     VisionTarget target;
+    VisionDirectionType type;
     NetworkTableEntry visionEntry;
     double imgWidth = 2000; //important to know if the target on the middle of the image 
 
-    public VisionPIDSource(VisionTarget target) {
+    public VisionPIDSource(VisionTarget target,VisionDirectionType type) {
         this.target = target;
+        this.type = type;
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         // TODO: find which table we are using to upload vision target dircetions
         NetworkTable targeTable = inst.getTable("SmartDashboard");
-        String targetKey;
-        switch (target) {
-        case kRetroflector:
-            targetKey = "RetroflectorDirection";
-            break;
-        case kCargo:
-            targetKey = "CargoDirection";
-            break;
-        case kLine:
-            targetKey = "LineDirection";
-            break;
-        default:
-            targetKey = "HatchDirection";
-            break;
-        }
-        this.visionEntry = targeTable.getEntry(targetKey);
+        this.visionEntry = targeTable.getEntry(target.key);
     }
 
     @Override
@@ -55,17 +42,38 @@ public class VisionPIDSource implements PIDSource {
 
     @Override
     public double pidGet() {
-        SmartDashboard.putNumber("target direction", this.visionEntry.getDouble(9999));
         if(this.visionEntry==null)
             return 0;
-        if(this.visionEntry.getDouble(9999)==9999.0)
+        String targetLocation = this.visionEntry.getString("9999 9999");
+        String[] locations = targetLocation.split(" ");
+        double x = Double.parseDouble(locations[type.key]);
+        // double y = Double.parseDouble(locations[1]);
+        SmartDashboard.putNumber("target direction "+type.toString(), x);
+        // SmartDashboard.putNumber("target direction y", y);
+        if(targetLocation.equals("9999 9999"))
             return 0;
-        return (-this.visionEntry.getDouble(0)/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
+        
+        return (-x/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
         //return -this.visionEntry.getDouble(0) - 1000;
     }
 
 
     public static enum VisionTarget {
-        kHatch, kCargo, kRetroflector, kLine;
+        kHatch("RetroflectorDirection"),
+        kCargo("CargoDirection"),
+        kRetroflector("LineDirection"),
+        kLine("HatchDirection");
+        public String key;
+        private VisionTarget(String key){
+            this.key = key;
+        }
+    }
+    public static enum VisionDirectionType{
+        x(0),
+        y(1);
+        public int key;
+        private VisionDirectionType(int key){
+            this.key = key;
+        }
     }
 }

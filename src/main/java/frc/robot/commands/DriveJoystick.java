@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -24,8 +25,8 @@ public class DriveJoystick extends Command {
 
   @Override
   protected void execute() {
-    double y = this.xbox.getY();
-    Robot.driveTrain.arcadeDrive(this.xbox.getX(), y, Math.abs(y) <= 0.50);
+    double y = this.xbox.getY(Hand.kLeft);
+    Robot.driveTrain.arcadeDrive(this.xbox.getX(Hand.kLeft), -y, Math.abs(y) <= 0.50);
   }
 
   @Override
