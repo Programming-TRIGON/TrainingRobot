@@ -16,9 +16,13 @@ import frc.robot.TwoEncoderPIDSource;
 public class DriveDistance extends Command {
   PIDController DriveDistanceController;
   PIDOutput DriveDistanceOutput;
+   double distance, kP, tolerance;
 
-  public DriveDistance() {
+  public DriveDistance(double distance, double kP, double tolerance) {
     requires(Robot.driveTrain);
+    this.distance = distance;
+    this.kP = kP;
+    this.tolerance = tolerance;
   }
 
   // Called just before this Command runs the first time
@@ -31,11 +35,11 @@ public class DriveDistance extends Command {
 
     };
 
-    PIDController DriveDistanceController = new PIDController(0.2, 0, 0, 
+    PIDController DriveDistanceController = new PIDController(kP, 0, 0, 
     new TwoEncoderPIDSource(), this.DriveDistanceOutput);
 
-    DriveDistanceController.setSetpoint(1000);
-    DriveDistanceController.setAbsoluteTolerance(0);
+    DriveDistanceController.setSetpoint(distance);
+    DriveDistanceController.setAbsoluteTolerance(tolerance);
     DriveDistanceController.setOutputRange(-1, 1);
     DriveDistanceController.enable();
   }

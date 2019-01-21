@@ -33,9 +33,9 @@ public class DriveTrain extends Subsystem {
     this.encoderLeft = encoderLeft;
 
     encoderLeft.setDistancePerPulse(
-        RobotConstants.RobotDimentions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimentions.CYCLE_TO_PULSE);
+        RobotConstants.RobotDimensions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimensions.CYCLE_TO_PULSE);
     encoderRight.setDistancePerPulse(
-        RobotConstants.RobotDimentions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimentions.CYCLE_TO_PULSE);
+        RobotConstants.RobotDimensions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimensions.CYCLE_TO_PULSE);
 
     SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
     SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
