@@ -14,33 +14,37 @@ import frc.robot.Robot;
 import frc.robot.TwoEncoderPIDSource;
 
 public class DriveDistance extends Command {
-  PIDController DriveDistanceController;
+  PIDController driveDistanceController;
   PIDOutput DriveDistanceOutput;
    double distance;
+   int targetTime;
+   double timeOnTarget = -1;
+
 
   public DriveDistance(double distance) {
     requires(Robot.driveTrain);
     this.distance = distance;
+    this.targetTime = 3;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    PIDOutput DriveDistanceOutput = new PIDOutput() {
-      public void pidWrite(double output) {
+    //  Robot.driveTrain.resetEncoders();
+        this.DriveDistanceOutput = new PIDOutput() {
+        public void pidWrite(double output) {
         Robot.driveTrain.arcadeDrive(output, 0);
       }
 
     };
 
-    PIDController DriveDistanceController = new PIDController(0.2, 0, 0, 
+    this.driveDistanceController = new PIDController(0.2, 0, 0, 
     new TwoEncoderPIDSource(), this.DriveDistanceOutput);
 
-    DriveDistanceController.setSetpoint(distance);
-    DriveDistanceController.setAbsoluteTolerance(0.1);
-    DriveDistanceController.setOutputRange(-1, 1);
-    DriveDistanceController.setToleranceBuffer(1);
-    DriveDistanceController.enable();
+    driveDistanceController.setSetpoint(distance);
+    driveDistanceController.setAbsoluteTolerance(0.1);
+    driveDistanceController.setOutputRange(-1, 1);
+    driveDistanceController.enable();
   }
 
   @Override
@@ -51,13 +55,20 @@ public class DriveDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return DriveDistanceController.onTarget();
+    // if (DriveDistanceController.onTarget())
+    // {
+    //   if(timeOnTarget < 0)
+    //    timeOnTarget = Timer.getFPGATimestamp();
+    // }
+
+    // return (Timer.getFPGATimestamp() - timeOnTarget >= this.targetTime);
+    return driveDistanceController.onTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    DriveDistanceController.disable();
+    driveDistanceController.disable();
     Robot.driveTrain.arcadeDrive(0, 0);
   }
 

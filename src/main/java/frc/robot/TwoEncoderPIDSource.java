@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class TwoEncoderPIDSource implements PIDSource {
 
   @Override
-  public void setPIDSourceType(PIDSourceType pidSource) {
+  public void setPIDSourceType(PIDSourceType pidSource) { 
   }
 
   @Override

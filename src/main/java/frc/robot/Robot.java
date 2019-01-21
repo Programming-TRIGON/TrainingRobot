@@ -52,6 +52,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Drivetrain Inverted", Robot.driveTrain.isInverted());
+    SmartDashboard.putNumber("Encoder distance", Robot.driveTrain.encoderTicks());
+    SmartDashboard.putNumber("DriveTrain: distance", Robot.driveTrain.getDistance());
+    SmartDashboard.putNumber("DriveTrain: distance", Robot.driveTrain.getDistance());
+    SmartDashboard.putNumber("enc left", Robot.driveTrain.encoderLeft());
+    SmartDashboard.putNumber("enc right", Robot.driveTrain.encoderRight());
   }
 
   /**

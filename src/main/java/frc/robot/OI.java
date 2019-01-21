@@ -18,14 +18,12 @@ import frc.robot.commands.ToggleInverted;
  */
 public class OI {
   public XboxController xbox;   
-  public JoystickButton buttonY, buttonA, buttonX;
+  public JoystickButton buttonY, buttonA;
   public OI(){
     this.xbox = new XboxController(0);
     this.buttonY = new JoystickButton(xbox, 4);
     this.buttonA = new JoystickButton(xbox, 1);
-    this.buttonX = new JoystickButton(xbox, 3);
     buttonY.whenPressed(new ToggleInverted());
-    buttonA.whenPressed(new DriveDistance(0.5));
-    buttonX.whenPressed(new DriveDistance(1));
+    buttonA.whenPressed(new DriveDistance(3));
   }
 }

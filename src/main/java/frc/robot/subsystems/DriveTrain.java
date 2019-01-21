@@ -24,7 +24,7 @@ public class DriveTrain extends Subsystem {
   boolean inverted = false;
 
   public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedController leftBack,
-      SpeedController leftFront, Encoder encoderRight, Encoder encoderLeft) {
+      SpeedController leftFront, Encoder encoderLeft, Encoder encoderRight) {
     this.backRightMotor = rightBack;
     this.frontRightMotor = rightFront;
     this.backLeftMotor = leftBack;
@@ -51,7 +51,19 @@ public class DriveTrain extends Subsystem {
   public double getDistance() {
     return (this.encoderLeft.getDistance() + this.encoderRight.getDistance()) / 2;
   }
-  
+
+  public int encoderTicks(){
+    return (this.encoderLeft.get() + this.encoderRight.get());
+  } 
+  public double encoderRight(){
+    return this.encoderRight.getDistance(); }
+    public double encoderLeft(){
+      return this.encoderLeft.getDistance(); }
+
+ /* public void resetEncoders(){
+    this.encoderLeft.reset();
+    this.encoderRight.reset();
+  } \*
   /*
    * public double gyroGet(){ return gyro.getRate(); }
    */
@@ -67,4 +79,5 @@ public class DriveTrain extends Subsystem {
   public boolean isInverted() {
     return this.inverted;
   }
+
 }
