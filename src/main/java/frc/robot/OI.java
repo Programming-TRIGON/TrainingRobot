@@ -8,9 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.EncoderPID;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.ToggleInverted;
 
 /**
@@ -26,6 +25,6 @@ public class OI {
     this.buttonY = new JoystickButton(xbox, 4);
     this.buttonA = new JoystickButton(xbox, 1);
     buttonY.whenPressed(new ToggleInverted());
-    buttonA.whenPressed(new EncoderPID());
+    buttonA.whenPressed(new DriveDistance());
   }
 }

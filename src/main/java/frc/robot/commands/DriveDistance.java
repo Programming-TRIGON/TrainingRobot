@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.TwoEncoderPIDSource;
 
 public class DriveDistance extends Command {
   PIDController DriveDistanceController;
@@ -23,24 +24,25 @@ public class DriveDistance extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
-  }
-
-  @Override
-  protected void execute() {
     PIDOutput DriveDistanceOutput = new PIDOutput() {
       public void pidWrite(double output) {
         Robot.driveTrain.arcadeDrive(output, 0);
       }
+
     };
 
     PIDController DriveDistanceController = new PIDController(0.2, 0, 0, 
-    Robot.DriveDistanceSource, this.DriveDistanceOutput);
+    new TwoEncoderPIDSource(), this.DriveDistanceOutput);
 
     DriveDistanceController.setSetpoint(1000);
-    DriveDistanceController.
+    DriveDistanceController.setAbsoluteTolerance(0);
     DriveDistanceController.setOutputRange(-1, 1);
     DriveDistanceController.enable();
+  }
+
+  @Override
+  protected void execute() {
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

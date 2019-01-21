@@ -26,7 +26,7 @@ public class TwoEncoderPIDSource implements PIDSource {
 
   @Override
   public double pidGet() {
-    return Robot.driveTrain.encLeftTicks() +  Robot.driveTrain.encRightTicks() / 2;
+    return Robot.driveTrain.getDistance();
   }
 
 }
