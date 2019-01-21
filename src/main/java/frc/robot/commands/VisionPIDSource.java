@@ -32,7 +32,6 @@ public class VisionPIDSource implements PIDSource {
 
     @Override
     public void setPIDSourceType(PIDSourceType pidSource) {
-
     }
 
     @Override
@@ -48,13 +47,9 @@ public class VisionPIDSource implements PIDSource {
         if(targetLocation.equals("9999"))
             return 9999;
         String[] locations = targetLocation.split(" ");
-        double x = Double.parseDouble(locations[type.key]);
-        // double y = Double.parseDouble(locations[1]);
-        SmartDashboard.putNumber("target direction " + type.toString(), x);
-        // SmartDashboard.putNumber("target direction y", y);
-        
-        return (-x/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
-        //return -this.visionEntry.getDouble(0) - 1000;
+        double directionValue = Double.parseDouble(locations[type.key]);
+        SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
+        return (-directionValue/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
     }
 
     public static enum VisionTarget {
