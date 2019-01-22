@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.commands.DriveJoystick;
@@ -19,18 +20,19 @@ import frc.robot.commands.DriveJoystick;
 public class DriveTrain extends Subsystem {
   SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
-  // Gyro gyro;
+  Gyro gyro;
   DifferentialDrive differentialDrive;
   boolean inverted = false;
 
   public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedController leftBack,
-      SpeedController leftFront, Encoder encoderLeft, Encoder encoderRight) {
+      SpeedController leftFront, Encoder encoderLeft, Encoder encoderRight, Gyro gyro) {
     this.backRightMotor = rightBack;
     this.frontRightMotor = rightFront;
     this.backLeftMotor = leftBack;
     this.frontLeftMotor = leftFront;
     this.encoderRight = encoderRight;
     this.encoderLeft = encoderLeft;
+    this.gyro = gyro;
 
     encoderLeft.setDistancePerPulse(
         RobotConstants.RobotDimensions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimensions.CYCLE_TO_PULSE);
@@ -40,7 +42,6 @@ public class DriveTrain extends Subsystem {
     SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
     SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
     this.differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
-    // this.gyro = gyro;
 
   }
 
@@ -52,13 +53,16 @@ public class DriveTrain extends Subsystem {
     return (this.encoderLeft.getDistance() + this.encoderRight.getDistance()) / 2;
   }
 
-  public int encoderTicks(){
-    return (this.encoderLeft.get() + this.encoderRight.get());
-  } 
   public double encoderRight(){
-    return this.encoderRight.getDistance(); }
-    public double encoderLeft(){
-      return this.encoderLeft.getDistance(); }
+    return this.encoderRight.getDistance();
+  }
+  public double encoderLeft(){
+    return this.encoderLeft.getDistance(); 
+  }
+
+  public double getAngle(){
+    return this.gyro.getAngle();
+  }  
 
  /* public void resetEncoders(){
     this.encoderLeft.reset();

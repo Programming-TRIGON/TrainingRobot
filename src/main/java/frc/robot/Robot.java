@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 
@@ -37,7 +38,8 @@ public class Robot extends TimedRobot {
       new VictorSP(RobotMap.BACK_LEFT_MOTOR),new VictorSP(RobotMap.FRONT_LEFT_MOTOR), 
       new VictorSP(RobotMap.BACK_RIGHT_MOTOR),new VictorSP(RobotMap.FRONT_RIGHT_MOTOR), 
       new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
-      new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
+      new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B),
+      new ADXRS450_Gyro());
     m_oi = new OI();
   }
 
@@ -52,11 +54,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Drivetrain Inverted", Robot.driveTrain.isInverted());
-    SmartDashboard.putNumber("Encoder distance", Robot.driveTrain.encoderTicks());
     SmartDashboard.putNumber("DriveTrain: distance", Robot.driveTrain.getDistance());
     SmartDashboard.putNumber("DriveTrain: distance", Robot.driveTrain.getDistance());
     SmartDashboard.putNumber("enc left", Robot.driveTrain.encoderLeft());
     SmartDashboard.putNumber("enc right", Robot.driveTrain.encoderRight());
+    SmartDashboard.putNumber("gyro angle", Robot.driveTrain.getAngle());
+
   }
 
   /**
