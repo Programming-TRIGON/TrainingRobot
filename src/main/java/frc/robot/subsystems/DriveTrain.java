@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -49,6 +50,10 @@ public class DriveTrain extends Subsystem {
     this.differentialDrive.arcadeDrive(x, y);
   }
 
+  public void tankDrive(double left, double right){
+    this.differentialDrive.tankDrive(left, right);
+  }
+  
   public double getDistance() {
     return (this.encoderLeft.getDistance() + this.encoderRight.getDistance()) / 2;
   }

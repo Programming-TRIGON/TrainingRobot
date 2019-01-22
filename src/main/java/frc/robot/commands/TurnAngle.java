@@ -4,6 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -29,8 +30,7 @@ public class TurnAngle extends Command {
       public void pidWrite(double output) {
         Robot.driveTrain.arcadeDrive(output, 0);
       }
-    }
-    ;
+    };
     this.turnAngleController = new PIDController(0.2, 0, 0,
     new GyroPIDSource() , this.turnAngleOutput);
 
