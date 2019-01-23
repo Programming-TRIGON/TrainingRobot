@@ -28,7 +28,7 @@ public class TurnAngle extends Command {
   protected void initialize() {
     this.turnAngleOutput = new PIDOutput(){
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(output, 0);
+        Robot.driveTrain.arcadeDrive(0, output);
       }
     };
     this.turnAngleController = new PIDController(0.2, 0, 0,
@@ -63,6 +63,6 @@ public class TurnAngle extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    turnAngleController.disable();
+    end();
   }
 }
