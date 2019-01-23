@@ -7,6 +7,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,6 +26,7 @@ public class TrackVisionTarget extends Command {
   VisionPIDSource.VisionTarget target;
   PIDController visionPIDController;
   XboxController xbox;
+  String networkTableChange;
 
   final Supplier<Double> kP = ConstantHandler.addConstantDouble("kP", 0.7);
   final Supplier<Double> kI = ConstantHandler.addConstantDouble("kI", 0.7);
@@ -29,15 +34,20 @@ public class TrackVisionTarget extends Command {
   final Supplier<Double> tolerance = ConstantHandler.addConstantDouble("tolerance", 0.7);
   final int SETPOINT = 0;
 
-  public TrackVisionTarget(VisionPIDSource.VisionTarget target, XboxController xbox) {
+  public TrackVisionTarget(VisionPIDSource.VisionTarget target, XboxController xbox, String networkTableChange) {
     this.target=target;
     this.xbox=xbox;
+    this.networkTableChange = networkTableChange; // TODO: change this shit 
     requires(Robot.driveTrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    NetworkTable imageProcessingTable = NetworkTableInstance.getDefault().getTable("ImageProcessing");
+    NetworkTableEntry target = imageProcessingTable.getEntry("target");
+    target.setString(this.networkTableChange);
+
     VisionPIDSource visionXPIDSource = new VisionPIDSource(this.target, VisionDirectionType.x); 
     VisionPIDSource visionYPIDSource = new VisionPIDSource(this.target, VisionDirectionType.y);
     XboxController xbox = this.xbox;
@@ -46,7 +56,8 @@ public class TrackVisionTarget extends Command {
       @Override
       public void pidWrite(double output) {
         if(visionXPIDSource.pidGet()!=9999){
-          Robot.driveTrain.arcadeDrive(output, visionYPIDSource.pidGet()*0.4, true);
+          double y = visionYPIDSource.pidGet();
+          Robot.driveTrain.arcadeDrive(output, y*0.4, Math.abs(y) <= 0.50);
         } else {
           double y = -xbox.getY(Hand.kLeft);
           Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), y, Math.abs(y) <= 0.50);

@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,8 +27,8 @@ public class VisionPIDSource implements PIDSource {
         this.type = type;
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         // TODO: find which table we are using to upload vision target dircetions
-        NetworkTable targeTable = inst.getTable("SmartDashboard");
-        this.visionEntry = targeTable.getEntry("HatchDirection");
+        NetworkTable targetTable = inst.getTable("SmartDashboard");
+        this.visionEntry = targetTable.getEntry(target.key);
     }
 
     @Override
