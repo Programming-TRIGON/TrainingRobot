@@ -11,33 +11,31 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.TwoEncoderPIDSource;
 import frc.robot.subsystems.GyroPIDSource;
 
 public class Arc extends Command {
-  double wheelDistance, radius, circumference, innerCircle, outerArc;
-  double innerArc, innerWheelSpeed, outerWheelSpeed, endingAngle;
-  double initialDistance,requiredDistance;
-  double distance;
+  double wheelDistance, radius, circumference, innerCircle, outerArc,
+  innerArc, innerWheelSpeed, outerWheelSpeed, angle,
+  initialDistance,requiredDistance;
   PIDController driveDistanceController;
   PIDOutput driveDistanceOutput;
   
-  public Arc(double wheelDistance, double radius, double endingAngle, Double outerWheelSpeed, double distance ) {
+  public Arc(double wheelDistance, double radius, double angle, Double outerWheelSpeed) {
    requires(Robot.driveTrain);
    this.wheelDistance = wheelDistance;
    this.radius = radius;
-   this.endingAngle = endingAngle;
+   this.angle = angle;
    this.outerWheelSpeed = outerWheelSpeed;
-   this.distance = distance;
-
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     circumference = radius * 2 * Math.PI;
-    outerArc = circumference / (360 / endingAngle);
+    outerArc = circumference / (360 / angle);
     innerCircle = (radius - wheelDistance) * 2 * Math.PI;
-    innerArc = innerCircle / (360 / endingAngle);
+    innerArc = innerCircle / (360 / angle);
     innerWheelSpeed = innerArc / outerArc * outerWheelSpeed;
   
     requiredDistance = (outerArc + innerArc)/2;
@@ -52,7 +50,7 @@ public class Arc extends Command {
     this.driveDistanceController = new PIDController(0.2, 0, 0,
     new GyroPIDSource() , this.driveDistanceOutput);
 
-    driveDistanceController.setSetpoint(distance);
+    driveDistanceController.setSetpoint(requiredDistance);
     driveDistanceController.setAbsoluteTolerance(0.1);
     driveDistanceController.setOutputRange(-1, 1);
     driveDistanceController.enable();    this.driveDistanceOutput = new PIDOutput(){
@@ -61,9 +59,9 @@ public class Arc extends Command {
       }
     };
     this.driveDistanceController = new PIDController(0.2, 0, 0,
-    new GyroPIDSource() , this.driveDistanceOutput);
+    new TwoEncoderPIDSource() , this.driveDistanceOutput);
 
-    driveDistanceController.setSetpoint(distance);
+    driveDistanceController.setSetpoint(requiredDistance);
     driveDistanceController.setAbsoluteTolerance(0.1);
     driveDistanceController.setOutputRange(-1, 1);
     driveDistanceController.enable();
@@ -78,7 +76,7 @@ public class Arc extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.driveTrain.getDistance() == requiredDistance - initialDistance;
+    return driveDistanceController.onTarget();
   }
 
   // Called once after isFinished returns true
