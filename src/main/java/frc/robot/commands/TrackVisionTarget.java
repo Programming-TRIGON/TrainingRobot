@@ -7,19 +7,21 @@
 
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
+import com.spikes2212.dashboard.ConstantHandler;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.VisionPIDController;
 import frc.robot.commands.VisionPIDSource.VisionDirectionType;
-import java.util.function.Supplier;
-import com.spikes2212.dashboard.ConstantHandler;
 
 public class TrackVisionTarget extends Command {
   
@@ -64,7 +66,7 @@ public class TrackVisionTarget extends Command {
       }
     };
 
-    visionPIDController = new PIDController(this.kP.get(), this.kI.get(), this.kD.get(), visionXPIDSource, visionXPIDOutput);
+    visionPIDController = new VisionPIDController(this.kP.get(), this.kI.get(), this.kD.get(), visionXPIDSource, visionXPIDOutput);
     visionPIDController.setAbsoluteTolerance(this.tolerance.get());
     visionPIDController.setSetpoint(this.SETPOINT);
     visionPIDController.setOutputRange(-1, 1);
