@@ -26,19 +26,27 @@ import frc.robot.commands.VisionPIDSource.VisionDirectionType;
 public class TrackVisionTarget extends Command {
   
   VisionPIDSource.VisionTarget target;
-  PIDController visionPIDController;
+  VisionPIDController visionXPIDController;
+  VisionPIDController visionYPIDController;
   XboxController xbox;
   String networkTableChange;
 
-  final Supplier<Double> kP = ConstantHandler.addConstantDouble("kP", 0.7);
-  final Supplier<Double> kI = ConstantHandler.addConstantDouble("kI", 0.7);
-  final Supplier<Double> kD = ConstantHandler.addConstantDouble("kD", 0.7);
-  final Supplier<Double> tolerance = ConstantHandler.addConstantDouble("tolerance", 0.7);
+  final Supplier<Double> XkP = ConstantHandler.addConstantDouble("XkP", 0.7);
+  final Supplier<Double> XkI = ConstantHandler.addConstantDouble("XkI", 0.7);
+  final Supplier<Double> XkD = ConstantHandler.addConstantDouble("XkD", 0.7);
+  final Supplier<Double> xTolerance = ConstantHandler.addConstantDouble("xTolerance", 0.7);
+  final Supplier<Double> YkP = ConstantHandler.addConstantDouble("YkP", 0.7);
+  final Supplier<Double> YkI = ConstantHandler.addConstantDouble("YkI", 0.7);
+  final Supplier<Double> YkD = ConstantHandler.addConstantDouble("YkD", 0.7);
+  final Supplier<Double> yTolerance = ConstantHandler.addConstantDouble("YTolerance", 0.7);
   final int SETPOINT = 0;
+  private double x;
+  private double y;
 
   public TrackVisionTarget(VisionPIDSource.VisionTarget target, XboxController xbox) {
     this.target=target;
     this.xbox=xbox;
+    
     requires(Robot.driveTrain);
   }
 
@@ -51,32 +59,30 @@ public class TrackVisionTarget extends Command {
 
     VisionPIDSource visionXPIDSource = new VisionPIDSource(this.target, VisionDirectionType.x); 
     VisionPIDSource visionYPIDSource = new VisionPIDSource(this.target, VisionDirectionType.y);
-    XboxController xbox = this.xbox;
-    PIDOutput visionXPIDOutput = new PIDOutput(){
-    
-      @Override
-      public void pidWrite(double output) {
-        if(visionXPIDSource.pidGet()!=9999){
-          double y = visionYPIDSource.pidGet();
-          Robot.driveTrain.arcadeDrive(output, y*0.4, Math.abs(y) <= 0.50);
-        } else {
-          double y = -xbox.getY(Hand.kLeft);
-          Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), y, Math.abs(y) <= 0.50);
-        }
-      }
-    };
-
-    visionPIDController = new VisionPIDController(this.kP.get(), this.kI.get(), this.kD.get(), visionXPIDSource, visionXPIDOutput);
-    visionPIDController.setAbsoluteTolerance(this.tolerance.get());
-    visionPIDController.setSetpoint(this.SETPOINT);
-    visionPIDController.setOutputRange(-1, 1);
-    visionPIDController.setInputRange(-1, 1);
-    visionPIDController.enable();
+    //pid controller for the x axis
+    visionXPIDController = new VisionPIDController(this.XkP.get(), this.XkI.get(), this.XkD.get(), visionXPIDSource, (output)->x=output);
+    visionXPIDController.setAbsoluteTolerance(this.xTolerance.get());
+    visionXPIDController.setSetpoint(this.SETPOINT);
+    visionXPIDController.setOutputRange(-1, 1);
+    visionXPIDController.setInputRange(-1, 1);
+    visionXPIDController.enable();
+    //pid controller for the y axis
+    visionYPIDController = new VisionPIDController(this.YkP.get(), this.YkI.get(), this.YkD.get(), visionYPIDSource, (output)->y=output);
+    visionYPIDController.setAbsoluteTolerance(this.yTolerance.get());
+    visionYPIDController.setSetpoint(this.SETPOINT);
+    visionYPIDController.setOutputRange(-1, 1);
+    visionYPIDController.setInputRange(-1, 1);
+    visionYPIDController.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(x==9999||y==9999){
+          Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), -xbox.getY(Hand.kLeft), Math.abs(y) <= 0.50);
+        } else {
+          Robot.driveTrain.arcadeDrive(x, y, Math.abs(y) <= 0.50);
+        }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -95,6 +101,7 @@ public class TrackVisionTarget extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    visionPIDController.disable();
+    visionXPIDController.disable();
+    visionYPIDController.disable();
   }
 }
