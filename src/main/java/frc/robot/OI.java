@@ -28,8 +28,8 @@ public class OI {
     this.xbox = new XboxController(0);
     this.AButton = new JoystickButton(this.xbox, 1);
     this.BButton = new JoystickButton(this.xbox, 2);
-    AButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch, this.xbox, "hatch"));
-    BButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kCargo, this.xbox, "cargo"));
+    AButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch, this.xbox));
+    BButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kCargo, this.xbox));
   }
   public double getX(){
     return xbox.getX(Hand.kLeft);

@@ -43,21 +43,36 @@ public class VisionPIDSource implements PIDSource {
     @Override
     public double pidGet() {
         if(this.visionEntry==null)
-            return 0;
+            return 9999;
         String targetLocation = this.visionEntry.getString("9999");
         if(targetLocation.equals("9999"))
             return 9999;
-        String[] locations = targetLocation.split(" ");
-        double directionValue = Double.parseDouble(locations[type.key]);
+        double directionValue = Double.parseDouble(targetLocation.split(" ")[type.key]);
         SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
         return (-directionValue/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
     }
 
     public static enum VisionTarget {
-        kHatch("RetroflectorDirection"),
-        kCargo("CargoDirection"),
-        kRetroflector("LineDirection"),
-        kLine("HatchDirection");
+        kHatch("RetroflectorDirection"){
+            public String toString(){
+                return "hatch";
+            }
+        },
+        kCargo("CargoDirection"){
+            public String toString(){
+                return "cargo";
+            }
+        },
+        kRetroflector("LineDirection"){
+            public String toString(){
+                return "retroflector";
+            }
+        },
+        kLine("HatchDirection"){
+            public String toString(){
+                return "line";
+            }
+        };
         public String key;
         private VisionTarget(String key){
             this.key = key;
