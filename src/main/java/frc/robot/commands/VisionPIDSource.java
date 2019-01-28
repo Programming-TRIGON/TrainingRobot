@@ -10,17 +10,16 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionPIDSource implements PIDSource {
-
+    private boolean isUpdated;
     VisionTarget target;
     VisionDirectionType type;
     NetworkTableEntry visionEntry;
-    double imgWidth = 2000; //important to know if the target on the middle of the image 
+    double imgWidth = 2000; // important to know if the target on the middle of the image
 
     public VisionPIDSource(VisionTarget target, VisionDirectionType type) {
         this.target = target;
@@ -42,48 +41,64 @@ public class VisionPIDSource implements PIDSource {
 
     @Override
     public double pidGet() {
-        if(this.visionEntry==null)
+        if (this.visionEntry == null) {
+            isUpdated = false;
             return 9999;
+        }
         String targetLocation = this.visionEntry.getString("9999");
-        if(targetLocation.equals("9999"))
+        if (targetLocation.equals("9999")) {
+            isUpdated = false;
             return 9999;
+        }
         double directionValue = Double.parseDouble(targetLocation.split(" ")[type.key]);
+        isUpdated = true;
         SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
-        return (-directionValue/(this.imgWidth/2))+1; //give the pid controller value between -1 and 1
+        return (-directionValue / (this.imgWidth / 2)) + 1; // give the pid controller value between -1 and 1
     }
 
     public static enum VisionTarget {
-        kHatch("RetroflectorDirection"){
-            public String toString(){
+        kHatch("RetroflectorDirection") {
+            public String toString() {
                 return "hatch";
             }
         },
-        kCargo("CargoDirection"){
-            public String toString(){
+        kCargo("CargoDirection") {
+            public String toString() {
                 return "cargo";
             }
         },
-        kRetroflector("LineDirection"){
-            public String toString(){
+        kRetroflector("LineDirection") {
+            public String toString() {
                 return "retroflector";
             }
         },
-        kLine("HatchDirection"){
-            public String toString(){
+        kLine("HatchDirection") {
+            public String toString() {
                 return "line";
             }
         };
         public String key;
-        private VisionTarget(String key){
+
+        private VisionTarget(String key) {
             this.key = key;
         }
     }
-    public static enum VisionDirectionType{
-        x(0),
-        y(1);
+
+    public static enum VisionDirectionType {
+        x(0), y(1);
         public int key;
-        private VisionDirectionType(int key){
+
+        private VisionDirectionType(int key) {
             this.key = key;
         }
+    }
+
+    /**
+     * 
+     * @return true if the image has been updated recently, otherwise it returns
+     *         false
+     */
+    public boolean isUpdated() {
+        return this.isUpdated;
     }
 }

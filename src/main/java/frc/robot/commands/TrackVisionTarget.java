@@ -15,8 +15,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -56,7 +54,7 @@ public class TrackVisionTarget extends Command {
     NetworkTable imageProcessingTable = NetworkTableInstance.getDefault().getTable("ImageProcessing");
     NetworkTableEntry target = imageProcessingTable.getEntry("target");
     target.setString(this.target.toString());
-
+    //pid sources for y and x
     VisionPIDSource visionXPIDSource = new VisionPIDSource(this.target, VisionDirectionType.x); 
     VisionPIDSource visionYPIDSource = new VisionPIDSource(this.target, VisionDirectionType.y);
     //pid controller for the x axis
@@ -78,6 +76,7 @@ public class TrackVisionTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    //if no direction is received, the driveTrain is controlled by the joystick
     if(x==9999||y==9999){
           Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), -xbox.getY(Hand.kLeft), Math.abs(y) <= 0.50);
         } else {
