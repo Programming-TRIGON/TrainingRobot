@@ -29,14 +29,14 @@ public class TrackVisionTarget extends Command {
   XboxController xbox;
   String networkTableChange;
 
-  final Supplier<Double> XkP = ConstantHandler.addConstantDouble("XkP", 0.7);
-  final Supplier<Double> XkI = ConstantHandler.addConstantDouble("XkI", 0.7);
-  final Supplier<Double> XkD = ConstantHandler.addConstantDouble("XkD", 0.7);
-  final Supplier<Double> xTolerance = ConstantHandler.addConstantDouble("xTolerance", 0.7);
-  final Supplier<Double> YkP = ConstantHandler.addConstantDouble("YkP", 0.7);
-  final Supplier<Double> YkI = ConstantHandler.addConstantDouble("YkI", 0.7);
-  final Supplier<Double> YkD = ConstantHandler.addConstantDouble("YkD", 0.7);
-  final Supplier<Double> yTolerance = ConstantHandler.addConstantDouble("YTolerance", 0.7);
+  final Supplier<Double> XkP = ConstantHandler.addConstantDouble("XkP", 0.4);
+  final Supplier<Double> XkI = ConstantHandler.addConstantDouble("XkI", 0);
+  final Supplier<Double> XkD = ConstantHandler.addConstantDouble("XkD", 0);
+  final Supplier<Double> xTolerance = ConstantHandler.addConstantDouble("xTolerance", 0.1);
+  final Supplier<Double> YkP = ConstantHandler.addConstantDouble("YkP", 0.4);
+  final Supplier<Double> YkI = ConstantHandler.addConstantDouble("YkI", 0);
+  final Supplier<Double> YkD = ConstantHandler.addConstantDouble("YkD", 0);
+  final Supplier<Double> yTolerance = ConstantHandler.addConstantDouble("YTolerance", 0.1);
   final int SETPOINT = 0;
   private double x;
   private double y;

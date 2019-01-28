@@ -57,7 +57,7 @@ public class VisionPIDSource implements PIDSource {
     }
 
     public static enum VisionTarget {
-        kHatch("RetroflectorDirection") {
+        kHatch("ReflectorDirection") {
             public String toString() {
                 return "hatch";
             }
