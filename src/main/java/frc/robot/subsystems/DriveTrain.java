@@ -47,7 +47,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public void arcadeDrive(double x, double y) {
-    this.differentialDrive.arcadeDrive(x, y);
+    this.differentialDrive.arcadeDrive(y, x);
   }
 
   public void tankDrive(double left, double right){
