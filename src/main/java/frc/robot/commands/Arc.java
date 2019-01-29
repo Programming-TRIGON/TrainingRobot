@@ -22,7 +22,7 @@ public class Arc extends Command {
   PIDOutput driveDistanceOutput;
   
   public Arc(double wheelDistance, double radius, double angle, Double outerWheelSpeed) {
-   requires(Robot.driveTrain);
+   requires(Robot.drivetrain);
    this.wheelDistance = wheelDistance;
    this.radius = radius;
    this.angle = angle;
@@ -39,12 +39,12 @@ public class Arc extends Command {
     innerWheelSpeed = innerArc / outerArc * outerWheelSpeed;
   
     requiredDistance = (outerArc + innerArc)/2;
-    initialDistance = Robot.driveTrain.getDistance();
-    Robot.driveTrain.tankDrive(outerWheelSpeed, innerWheelSpeed);
+    initialDistance = Robot.drivetrain.getDistance();
+    Robot.drivetrain.tankDrive(outerWheelSpeed, innerWheelSpeed);
     
     this.driveDistanceOutput = new PIDOutput(){
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(output, 0);
+        Robot.drivetrain.arcadeDrive(output, 0);
       }
     };
     this.driveDistanceController = new PIDController(0.2, 0, 0,
@@ -55,7 +55,7 @@ public class Arc extends Command {
     driveDistanceController.setOutputRange(-1, 1);
     driveDistanceController.enable();    this.driveDistanceOutput = new PIDOutput(){
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(output, 0);
+        Robot.drivetrain.arcadeDrive(output, 0);
       }
     };
     this.driveDistanceController = new PIDController(0.2, 0, 0,
@@ -83,13 +83,13 @@ public class Arc extends Command {
   @Override
   protected void end() {
     driveDistanceController.disable();
-    Robot.driveTrain.tankDrive(0, 0);
+    Robot.drivetrain.tankDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.driveTrain.tankDrive(0, 0);
+    Robot.drivetrain.tankDrive(0, 0);
   }
 }

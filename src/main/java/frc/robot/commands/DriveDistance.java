@@ -22,7 +22,7 @@ public class DriveDistance extends Command {
   double lastTimeNotOnTarget;
 
   public DriveDistance(double distance) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.distance = distance;
     this.targetTime = 3;
   }
@@ -33,7 +33,7 @@ public class DriveDistance extends Command {
     // Robot.driveTrain.resetEncoders();
     this.DriveDistanceOutput = new PIDOutput() {
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(output, 0);
+        Robot.drivetrain.arcadeDrive(output, 0);
       }
 
     };
@@ -64,7 +64,7 @@ public class DriveDistance extends Command {
   @Override
   protected void end() {
     driveDistanceController.disable();
-    Robot.driveTrain.arcadeDrive(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same

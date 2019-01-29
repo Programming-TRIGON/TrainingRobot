@@ -24,6 +24,6 @@ public class GyroPIDSource implements PIDSource {
        }
      
     public double pidGet(){
-        return Robot.driveTrain.getAngle();
+        return Robot.drivetrain.getAngle();
     }
 }

@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -68,6 +69,41 @@ public class DriveTrain extends Subsystem {
   public double getAngle(){
     return this.gyro.getAngle();
   }  
+
+  public Gyro getGyro(){
+    return new Gyro(){
+    
+      @Override
+      public void close() throws Exception {
+        
+      }
+    
+      @Override
+      public void reset() {
+        
+      }
+    
+      @Override
+      public double getRate() {
+        return 0;
+      }
+    
+      @Override
+      public double getAngle() {
+        return 0;
+      }
+    
+      @Override
+      public void free() {
+        
+      }
+    
+      @Override
+      public void calibrate() {
+        
+      }
+    };
+  }
 
  /* public void resetEncoders(){
     this.encoderLeft.reset();

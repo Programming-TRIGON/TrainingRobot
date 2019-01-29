@@ -19,7 +19,7 @@ public class TurnAngle extends Command {
   PIDOutput turnAngleOutput;
    
   public TurnAngle(double angle) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.angle = angle;
   }
 
@@ -28,7 +28,7 @@ public class TurnAngle extends Command {
   protected void initialize() {
     this.turnAngleOutput = new PIDOutput(){
       public void pidWrite(double output) {
-        Robot.driveTrain.arcadeDrive(0, output);
+        Robot.drivetrain.arcadeDrive(0, output);
       }
     };
     this.turnAngleController = new PIDController(0.2, 0, 0,
@@ -56,7 +56,7 @@ public class TurnAngle extends Command {
   @Override
   protected void end() {
     turnAngleController.disable();
-    Robot.driveTrain.arcadeDrive(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same

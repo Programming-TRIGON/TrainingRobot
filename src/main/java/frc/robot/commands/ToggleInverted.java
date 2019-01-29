@@ -13,14 +13,14 @@ import frc.robot.Robot;
 public class ToggleInverted extends Command {
   
   public ToggleInverted() {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.driveTrain.toggleInverted();
+    Robot.drivetrain.toggleInverted();
   }
 
   // Called repeatedly when this Command is scheduled to run

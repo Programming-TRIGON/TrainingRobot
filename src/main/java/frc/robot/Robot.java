@@ -23,7 +23,7 @@ import frc.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrain driveTrain;
+  public static DriveTrain drivetrain;
   public static OI m_oi;
 
 
@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    Robot.driveTrain = new DriveTrain(
+    Robot.drivetrain = new DriveTrain(
       new VictorSP(RobotMap.BACK_LEFT_MOTOR),new VictorSP(RobotMap.FRONT_LEFT_MOTOR), 
       new VictorSP(RobotMap.BACK_RIGHT_MOTOR),new VictorSP(RobotMap.FRONT_RIGHT_MOTOR), 
       new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
@@ -53,12 +53,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putBoolean("Drivetrain Inverted", Robot.driveTrain.isInverted());
-    SmartDashboard.putNumber("DriveTrain: distance", Robot.driveTrain.getDistance());
-    SmartDashboard.putNumber("DriveTrain: distance", Robot.driveTrain.getDistance());
-    SmartDashboard.putNumber("enc left", Robot.driveTrain.encoderLeft());
-    SmartDashboard.putNumber("enc right", Robot.driveTrain.encoderRight());
-    SmartDashboard.putNumber("gyro angle", Robot.driveTrain.getAngle());
+    SmartDashboard.putBoolean("Drivetrain Inverted", Robot.drivetrain.isInverted());
+    SmartDashboard.putNumber("DriveTrain: distance", Robot.drivetrain.getDistance());
+    SmartDashboard.putNumber("DriveTrain: distance", Robot.drivetrain.getDistance());
+    SmartDashboard.putNumber("enc left", Robot.drivetrain.encoderLeft());
+    SmartDashboard.putNumber("enc right", Robot.drivetrain.encoderRight());
+    SmartDashboard.putNumber("gyro angle", Robot.drivetrain.getAngle());
 
   }
 
