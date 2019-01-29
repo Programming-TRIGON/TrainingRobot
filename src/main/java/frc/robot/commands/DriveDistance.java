@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.TwoEncoderPIDSource;
@@ -16,10 +17,9 @@ import frc.robot.TwoEncoderPIDSource;
 public class DriveDistance extends Command {
   PIDController driveDistanceController;
   PIDOutput DriveDistanceOutput;
-   double distance;
-   int targetTime;
-   double timeOnTarget = -1;
-
+  double distance;
+  int targetTime;
+  double lastTimeNotOnTarget;
 
   public DriveDistance(double distance) {
     requires(Robot.driveTrain);
@@ -30,16 +30,15 @@ public class DriveDistance extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //  Robot.driveTrain.resetEncoders();
-        this.DriveDistanceOutput = new PIDOutput() {
-        public void pidWrite(double output) {
+    // Robot.driveTrain.resetEncoders();
+    this.DriveDistanceOutput = new PIDOutput() {
+      public void pidWrite(double output) {
         Robot.driveTrain.arcadeDrive(output, 0);
       }
 
     };
 
-    this.driveDistanceController = new PIDController(0.2, 0, 0, 
-    new TwoEncoderPIDSource(), this.DriveDistanceOutput);
+    this.driveDistanceController = new PIDController(0.2, 0, 0, new TwoEncoderPIDSource(), this.DriveDistanceOutput);
 
     driveDistanceController.setSetpoint(distance);
     driveDistanceController.setAbsoluteTolerance(0.1);
@@ -55,14 +54,10 @@ public class DriveDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // if (DriveDistanceController.onTarget())
-    // {
-    //   if(timeOnTarget < 0)
-    //    timeOnTarget = Timer.getFPGATimestamp();
-    // }
-
-    // return (Timer.getFPGATimestamp() - timeOnTarget >= this.targetTime);
-    return driveDistanceController.onTarget();
+    if (!driveDistanceController.onTarget()) {
+      lastTimeNotOnTarget = Timer.getFPGATimestamp();
+    }
+    return Timer.getFPGATimestamp() - lastTimeNotOnTarget >= targetTime;
   }
 
   // Called once after isFinished returns true
