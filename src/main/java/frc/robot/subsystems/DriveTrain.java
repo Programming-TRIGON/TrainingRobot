@@ -5,65 +5,124 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems ;
+package frc.robot.subsystems;
 
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.Robot;
+import frc.robot.RobotConstants;
 import frc.robot.commands.DriveJoystick;
-
 
 public class DriveTrain extends Subsystem {
   SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
- // Gyro gyro;
+  Gyro gyro;
   DifferentialDrive differentialDrive;
   boolean inverted = false;
 
-public DriveTrain(
-  SpeedController rightBack, SpeedController rightFront, 
-  SpeedController leftBack, SpeedController leftFront, 
-  Encoder encoderRight, Encoder encoderLeft) {
-  this.backRightMotor = rightBack;
-  this.frontRightMotor = rightFront;
-  this.backLeftMotor = leftBack;
-  this.frontLeftMotor = leftFront;
-  this.encoderRight = encoderRight;
-  this.encoderLeft  = encoderLeft;
+  public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedController leftBack,
+      SpeedController leftFront, Encoder encoderLeft, Encoder encoderRight, Gyro gyro) {
+    this.backRightMotor = rightBack;
+    this.frontRightMotor = rightFront;
+    this.backLeftMotor = leftBack;
+    this.frontLeftMotor = leftFront;
+    this.encoderRight = encoderRight;
+    this.encoderLeft = encoderLeft;
+    this.gyro = gyro;
 
-  SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
-  SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
-  this.differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
- // this.gyro = gyro;
+    encoderLeft.setDistancePerPulse(
+        RobotConstants.RobotDimensions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimensions.CYCLE_TO_PULSE);
+    encoderRight.setDistancePerPulse(
+        RobotConstants.RobotDimensions.DRIVETRAIN_CYCLES_PER_METER * RobotConstants.RobotDimensions.CYCLE_TO_PULSE);
 
+    SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
+    SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
+    this.differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
-}
-  public void arcadeDrive(double x, double y){
-    this.differentialDrive.arcadeDrive(x, y);
   }
 
-  public double encRightTicks(){
-    return encoderRight.get();
+  public void arcadeDrive(double x, double y) {
+    this.differentialDrive.arcadeDrive(y, x);
   }
 
-  public double encLeftTicks(){
-    return encoderLeft.get();
-  } 
+  public void tankDrive(double left, double right){
+    this.differentialDrive.tankDrive(left, right);
+  }
+  
+  public double getDistance() {
+    return (this.encoderLeft.getDistance() + this.encoderRight.getDistance()) / 2;
+  }
 
- /* public double gyroGet(){
-    return gyro.getRate();
-  } */ 
+  public double encoderRight(){
+    return this.encoderRight.getDistance();
+  }
+  public double encoderLeft(){
+    return this.encoderLeft.getDistance(); 
+  }
+
+  public double getAngle(){
+    return this.gyro.getAngle();
+  }  
+
+  public Gyro getGyro(){
+    return new Gyro(){
+    
+      @Override
+      public void close() throws Exception {
+        
+      }
+    
+      @Override
+      public void reset() {
+        
+      }
+    
+      @Override
+      public double getRate() {
+        return 0;
+      }
+    
+      @Override
+      public double getAngle() {
+        return 0;
+      }
+    
+      @Override
+      public void free() {
+        
+      }
+    
+      @Override
+      public void calibrate() {
+        
+      }
+    };
+  }
+
+ /* public void resetEncoders(){
+    this.encoderLeft.reset();
+    this.encoderRight.reset();
+  } \*
+  /*
+   * public double gyroGet(){ return gyro.getRate(); }
+   */
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox));
   }
-  public void toggleInverted(){
+
+  public void toggleInverted() {
     this.inverted = !this.inverted;
   }
-  public boolean isInverted(){
+
+  public boolean isInverted() {
     return this.inverted;
   }
+
 }

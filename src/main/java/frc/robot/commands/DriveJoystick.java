@@ -15,7 +15,7 @@ import frc.robot.Robot;
 public class DriveJoystick extends Command {
   XboxController xbox;
   public DriveJoystick(XboxController xbox) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.xbox = xbox;
   }
 
@@ -24,8 +24,8 @@ public class DriveJoystick extends Command {
 
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(
-      Robot.driveTrain.isInverted() ? -1 * this.xbox.getY(Hand.kLeft) :1 * this.xbox.getY(Hand.kLeft), this.xbox.getX(Hand.kLeft));
+    Robot.drivetrain.arcadeDrive(
+      Robot.drivetrain.isInverted() ? -1 * this.xbox.getY(Hand.kLeft) :1 * this.xbox.getY(Hand.kLeft), this.xbox.getX(Hand.kLeft));
   }
 
   @Override
@@ -36,7 +36,7 @@ public class DriveJoystick extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.arcadeDrive(0,0);
+    Robot.drivetrain.arcadeDrive(0,0);
   }
 
   // Called when another command which requires one or more of the same
