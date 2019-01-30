@@ -15,11 +15,10 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionPIDSource implements PIDSource {
-    private boolean isUpdated;
-    VisionTarget target;
-    VisionDirectionType type;
-    NetworkTableEntry visionEntry;
-    double imgWidth = 2000; // important to know if the target on the middle of the image
+    private VisionTarget target;
+    private VisionDirectionType type;
+    private NetworkTableEntry visionEntry;
+    private final double IMAGE_WIDGH = 2000; // important to know if the target on the middle of the image
 
     public VisionPIDSource(VisionTarget target, VisionDirectionType type) {
         this.target = target;
@@ -42,21 +41,15 @@ public class VisionPIDSource implements PIDSource {
     @Override
     public double pidGet() {
         if (this.visionEntry == null) {
-            isUpdated = false;
-            SmartDashboard.putBoolean("isUpdated", isUpdated);
             return 9999;
         }
         String targetLocation = this.visionEntry.getString("9999");
         if (targetLocation.equals("9999")) {
-            isUpdated = false;
-            SmartDashboard.putBoolean("isUpdated", isUpdated);
             return 9999;
         }
         double directionValue = Double.parseDouble(targetLocation.split(" ")[type.key]);
-        isUpdated = true;
-        System.out.println("isUpdated");
         SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
-        return (-directionValue / (this.imgWidth / 2)) + 1; // give the pid controller value between -1 and 1
+        return (-directionValue / (this.IMAGE_WIDGH / 2)) + 1; // give the pid controller value between -1 and 1
     }
 
     public static enum VisionTarget {

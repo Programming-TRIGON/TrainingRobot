@@ -59,9 +59,7 @@ public class TrackVisionTarget extends Command {
     VisionPIDSource visionYPIDSource = new VisionPIDSource(this.target, VisionDirectionType.y);
     // pid controller for the x axis
     visionXPIDController = new VisionPIDController(this.XkP.get(), this.XkI.get(), this.XkD.get(), visionXPIDSource,
-        (output) -> {
-          x = output;
-        });
+        (output) -> x = output);
     visionXPIDController.setAbsoluteTolerance(this.xTolerance.get());
     visionXPIDController.setSetpoint(this.SETPOINT);
     visionXPIDController.setOutputRange(-1, 1);
@@ -69,9 +67,7 @@ public class TrackVisionTarget extends Command {
     visionXPIDController.enable();
     // pid controller for the y axis
     visionYPIDController = new VisionPIDController(this.YkP.get(), this.YkI.get(), this.YkD.get(), visionYPIDSource,
-        (output) -> {
-          y = output;
-        });
+        (output) -> y = output);
     visionYPIDController.setAbsoluteTolerance(this.yTolerance.get());
     visionYPIDController.setSetpoint(this.SETPOINT);
     visionYPIDController.setOutputRange(-1, 1);
@@ -85,7 +81,7 @@ public class TrackVisionTarget extends Command {
     // if no direction is received, the driveTrain is controlled by the joystick
     if (x == 9999 || y == 9999) {
       double y = -xbox.getY(Hand.kLeft);
-      Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft),y, Math.abs(y) <= 0.50);
+      Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), y, Math.abs(y) <= 0.50);
     } else {
       Robot.driveTrain.arcadeDrive(x, -y, Math.abs(y) <= 0.50);
     }
@@ -100,10 +96,7 @@ public class TrackVisionTarget extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    visionXPIDController.disable();
-    visionYPIDController.disable();
-    visionXPIDController.close();
-    visionYPIDController.close();
+    interrupted();
   }
 
   // Called when another command which requires one or more of the same
