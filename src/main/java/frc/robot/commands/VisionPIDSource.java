@@ -43,21 +43,24 @@ public class VisionPIDSource implements PIDSource {
     public double pidGet() {
         if (this.visionEntry == null) {
             isUpdated = false;
+            SmartDashboard.putBoolean("isUpdated", isUpdated);
             return 9999;
         }
         String targetLocation = this.visionEntry.getString("9999");
         if (targetLocation.equals("9999")) {
             isUpdated = false;
+            SmartDashboard.putBoolean("isUpdated", isUpdated);
             return 9999;
         }
         double directionValue = Double.parseDouble(targetLocation.split(" ")[type.key]);
         isUpdated = true;
+        System.out.println("isUpdated");
         SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
         return (-directionValue / (this.imgWidth / 2)) + 1; // give the pid controller value between -1 and 1
     }
 
     public static enum VisionTarget {
-        kHatch("ReflectorDirection") {
+        kHatch("HatchDirection") {
             public String toString() {
                 return "hatch";
             }
@@ -67,12 +70,12 @@ public class VisionPIDSource implements PIDSource {
                 return "cargo";
             }
         },
-        kRetroflector("LineDirection") {
+        kRetroflector("ReflectorDirection") {
             public String toString() {
                 return "retroflector";
             }
         },
-        kLine("HatchDirection") {
+        kLine("LineDirection") {
             public String toString() {
                 return "line";
             }
@@ -99,6 +102,6 @@ public class VisionPIDSource implements PIDSource {
      *         false
      */
     public boolean isUpdated() {
-        return this.isUpdated;
+        return !this.visionEntry.getString("9999").equals("9999");
     }
 }
