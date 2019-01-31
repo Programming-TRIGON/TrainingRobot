@@ -48,7 +48,6 @@ public class VisionPIDSource implements PIDSource {
             return 9999;
         }
         double directionValue = Double.parseDouble(targetLocation.split(" ")[type.key]);
-        SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
         return (-directionValue / (this.IMAGE_WIDGH / 2)) + 1; // give the pid controller value between -1 and 1
     }
 
