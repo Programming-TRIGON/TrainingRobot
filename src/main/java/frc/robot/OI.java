@@ -22,14 +22,16 @@ import frc.robot.commands.VisionPIDSource;
 
 public class OI {
   public XboxController xbox;
-  Button AButton, BButton;
+  Button AButton, BButton, XButton;
   public OI(){
     // TODO: change to robotMap port
     this.xbox = new XboxController(0);
     this.AButton = new JoystickButton(this.xbox, 1);
     this.BButton = new JoystickButton(this.xbox, 2);
+    this.XButton = new JoystickButton(this.xbox, 3);
     AButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch, this.xbox));
-   // BButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kCargo, this.xbox));
+    BButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kCargo, this.xbox));
+    XButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kRetroflector, this.xbox));
   }
   public double getX(){
     return xbox.getX(Hand.kLeft);

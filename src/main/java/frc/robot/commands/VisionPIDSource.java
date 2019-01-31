@@ -64,7 +64,7 @@ public class VisionPIDSource implements PIDSource {
         },
         kRetroflector("ReflectorDirection") {
             public String toString() {
-                return "retroflector";
+                return "reflector";
             }
         },
         kLine("LineDirection") {
