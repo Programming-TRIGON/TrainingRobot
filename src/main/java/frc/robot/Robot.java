@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
+import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.followers.EncoderFollower;
 
 public class Robot extends TimedRobot {
@@ -16,13 +17,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+
     Robot.driveTrain = new DriveTrain(new VictorSP(RobotMap.BACK_LEFT_MOTOR), new VictorSP(RobotMap.FRONT_LEFT_MOTOR),
         new VictorSP(RobotMap.BACK_RIGHT_MOTOR), new VictorSP(RobotMap.FRONT_RIGHT_MOTOR),
         new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B),
-        new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B), new AnalogGyro(RobotMap.ANALOG_GYRO),
-        new EncoderFollower(PathfinderFRC.getTrajectory(PathfinderConstants.PathName + ".left"),
-            new EncoderFollower(PathfinderFRC.getTrajectory(PathfinderConstants.PathName + ".right"))),
-        new Notifier(this::followPath));
+        new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B), new AnalogGyro(RobotMap.ANALOG_GYRO));
     m_oi = new OI();
   }
 

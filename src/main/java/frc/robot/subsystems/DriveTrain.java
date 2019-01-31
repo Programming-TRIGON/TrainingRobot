@@ -28,11 +28,11 @@ public class DriveTrain extends Subsystem {
   EncoderFollower encoderFollowerLeft, encoderFollowerRight;
   Notifier encoderNotifier;
   DifferentialDrive differentialDrive;
+
   boolean inverted = false;
 
   public DriveTrain(SpeedController rightBack, SpeedController rightFront, SpeedController leftBack,
-      SpeedController leftFront, Encoder encoderRight, Encoder encoderLeft, AnalogGyro gyro,
-      EncoderFollower encoderFollowerRight, EncoderFollower encoderFollowerLeft, Notifier encoderNotifier) {
+      SpeedController leftFront, Encoder encoderRight, Encoder encoderLeft, AnalogGyro gyro) {
     this.backRightMotor = rightBack;
     this.frontRightMotor = rightFront;
     this.backLeftMotor = leftBack;
@@ -40,9 +40,6 @@ public class DriveTrain extends Subsystem {
     this.encoderRight = encoderRight;
     this.encoderLeft = encoderLeft;
     this.gyro = gyro;
-    this.encoderFollowerRight = encoderFollowerRight;
-    this.encoderFollowerLeft = encoderFollowerLeft;
-    this.encoderNotifier = encoderNotifier;
 
     SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
     SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
@@ -53,12 +50,19 @@ public class DriveTrain extends Subsystem {
     this.differentialDrive.arcadeDrive(x, y);
   }
 
-  public double encRightTicks() {
+  public void tankDrive(double left, double right){
+    this.differentialDrive.tankDrive(left, right);
+  }
+
+  public int encRightTicks() {
     return encoderRight.get();
   }
 
-  public double encLeftTicks() {
+  public int encLeftTicks() {
     return encoderLeft.get();
+  }
+  public double gyroAngle(){
+    return gyro.getAngle();
   }
 
   /*
@@ -76,4 +80,5 @@ public class DriveTrain extends Subsystem {
   public boolean isInverted() {
     return this.inverted;
   }
+
 }

@@ -12,7 +12,7 @@ package frc.robot;
  */
 public class PathfinderConstants {
     //TODO get actuall values these are placeholders
-    public static final double TicksPerRevolution = 360;
+    public static final int TicksPerRevolution = 360;
     public static final double WheelDiameter = 15.24;
     public static final double MaxVelocity = 4;
     public static final String PathName = "TheFinderOfAllThings";
