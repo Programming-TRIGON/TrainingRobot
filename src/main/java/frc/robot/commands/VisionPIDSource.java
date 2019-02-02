@@ -54,12 +54,12 @@ public class VisionPIDSource implements PIDSource {
         }
         double directionValue = Double.parseDouble(targetLocation.split(" ")[type.key]);
         isUpdated = true;
-        System.out.println("isUpdated");
         SmartDashboard.putNumber("target direction " + type.toString(), directionValue);
         return (-directionValue / (this.imgWidth / 2)) + 1; // give the pid controller value between -1 and 1
     }
 
     public static enum VisionTarget {
+        
         kHatch("HatchDirection") {
             public String toString() {
                 return "hatch";
@@ -70,7 +70,7 @@ public class VisionPIDSource implements PIDSource {
                 return "cargo";
             }
         },
-        kRetroflector("ReflectorDirection") {
+        kReflector("ReflectorDirection") {
             public String toString() {
                 return "retroflector";
             }

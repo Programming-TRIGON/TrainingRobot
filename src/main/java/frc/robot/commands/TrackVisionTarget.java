@@ -37,7 +37,8 @@ public class TrackVisionTarget extends Command {
   final Supplier<Double> YkI = ConstantHandler.addConstantDouble("YkI", 0);
   final Supplier<Double> YkD = ConstantHandler.addConstantDouble("YkD", 0);
   final Supplier<Double> yTolerance = ConstantHandler.addConstantDouble("YTolerance", 0.1);
-  final int SETPOINT = 0;
+  final double X_SETPOINT = 0;
+  final double Y_SETPOINT = 0;
   private double x;
   private double y;
 
@@ -63,7 +64,7 @@ public class TrackVisionTarget extends Command {
           x = output;
         });
     visionXPIDController.setAbsoluteTolerance(this.xTolerance.get());
-    visionXPIDController.setSetpoint(this.SETPOINT);
+    visionXPIDController.setSetpoint(this.X_SETPOINT);
     visionXPIDController.setOutputRange(-1, 1);
     visionXPIDController.setInputRange(-1, 1);
     visionXPIDController.enable();
@@ -73,7 +74,7 @@ public class TrackVisionTarget extends Command {
           y = output;
         });
     visionYPIDController.setAbsoluteTolerance(this.yTolerance.get());
-    visionYPIDController.setSetpoint(this.SETPOINT);
+    visionYPIDController.setSetpoint(this.Y_SETPOINT);
     visionYPIDController.setOutputRange(-1, 1);
     visionYPIDController.setInputRange(-1, 1);
     visionYPIDController.enable();
