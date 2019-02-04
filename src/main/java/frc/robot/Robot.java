@@ -39,10 +39,8 @@ public class Robot extends TimedRobot {
         new VictorSP(RobotMap.BACK_RIGHT_MOTOR), new VictorSP(RobotMap.FRONT_RIGHT_MOTOR),
         new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B),
         new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
-    Robot.driveTrain = new DriveTrain(new VictorSP(RobotMap.BACK_RIGHT_MOTOR), new VictorSP(RobotMap.FRONT_RIGHT_MOTOR),
-        new VictorSP(RobotMap.BACK_LEFT_MOTOR), new VictorSP(RobotMap.FRONT_LEFT_MOTOR),
-        new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B),
-        new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B));
+    Robot.spikesDrivetrain = new TankDrivetrain(RobotComponents.TANK_DRIVE_LEFT_MOTORS::set,
+        RobotComponents.TANK_DRIVE_RIGHT_MOTORS::set);
     m_oi = new OI();
   }
 
