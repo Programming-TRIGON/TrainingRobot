@@ -15,5 +15,18 @@ public class PathfinderConstants {
     public static final int TicksPerRevolution = 360;
     public static final double WheelDiameter = 15.24;
     public static final double MaxVelocity = 4;
-    public static final String PathName = "TheFinderOfAllThings";
+    public static enum pathName{
+        kPathBottomRight("PathBottomRight"),
+        kPathBottomMiddle("PathBottomMiddle"),
+        kPathBottomLeft("PathBottomLeft"),
+        kPathTopRight("PathTopRight"),
+        kPathTopLeft("PathTopLeft");
+
+        public String key;
+        pathName(String pathName) {
+            this.key = pathName;
+        }
+
+    }
+    // public static final String PathName = "TheFinderOfAllThings";
 }
