@@ -35,7 +35,7 @@ public class VisionPIDController extends PIDController implements Controller {
      */
     @Override
     protected void calculate() {
-        boolean isUpdated = false;
+        boolean isUpdated;
         this.m_thisMutex.lock();
         try {
             isUpdated = m_pidInput.isUpdated();

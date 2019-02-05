@@ -11,80 +11,62 @@ import java.util.function.Supplier;
 
 import com.spikes2212.dashboard.ConstantHandler;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import frc.robot.Robot;
 import frc.robot.VisionPIDController;
 import frc.robot.commands.VisionPIDSource.VisionDirectionType;
 
-public class TrackVisionTarget extends Command {
-
+public class TrackReflector extends Command {
   VisionPIDSource.VisionTarget target;
   VisionPIDController visionXPIDController;
-  VisionPIDController visionYPIDController;
   XboxController xbox;
   String networkTableChange;
-
   final Supplier<Double> XkP = ConstantHandler.addConstantDouble("XkP", 0.4);
   final Supplier<Double> XkI = ConstantHandler.addConstantDouble("XkI", 0);
   final Supplier<Double> XkD = ConstantHandler.addConstantDouble("XkD", 0);
-  final Supplier<Double> xTolerance = ConstantHandler.addConstantDouble("xTolerance", 0.1);
-  final Supplier<Double> YkP = ConstantHandler.addConstantDouble("YkP", 0.4);
-  final Supplier<Double> YkI = ConstantHandler.addConstantDouble("YkI", 0);
-  final Supplier<Double> YkD = ConstantHandler.addConstantDouble("YkD", 0);
-  final Supplier<Double> yTolerance = ConstantHandler.addConstantDouble("YTolerance", 0.1);
-  final double X_SETPOINT = 0;
-  final double Y_SETPOINT = 0;
+  final Supplier<Double> reflectorTolerance = ConstantHandler.addConstantDouble("refrelctorTolerance", 0.3);
+  final int SETPOINT = 0;
   private double x;
-  private double y;
 
-  public TrackVisionTarget(VisionPIDSource.VisionTarget target, XboxController xbox) {
-    this.target = target;
+  public TrackReflector(XboxController xbox) {
+    this.target = VisionPIDSource.VisionTarget.kRetroflector;
     this.xbox = xbox;
-
     requires(Robot.driveTrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    NetworkTable imageProcessingTable = NetworkTableInstance.getDefault().getTable("ImageProcessing");
+    edu.wpi.first.networktables.NetworkTable imageProcessingTable = NetworkTableInstance.getDefault().getTable("ImageProcessing");
     NetworkTableEntry target = imageProcessingTable.getEntry("target");
     target.setString(this.target.toString());
-    // pid sources for y and x
+    // pid source for x
     VisionPIDSource visionXPIDSource = new VisionPIDSource(this.target, VisionDirectionType.x);
-    VisionPIDSource visionYPIDSource = new VisionPIDSource(this.target, VisionDirectionType.y);
     // pid controller for the x axis
     visionXPIDController = new VisionPIDController(this.XkP.get(), this.XkI.get(), this.XkD.get(), visionXPIDSource,
         (output) -> x = output);
-    visionXPIDController.setAbsoluteTolerance(this.xTolerance.get());
-    visionXPIDController.setSetpoint(this.X_SETPOINT);
+    visionXPIDController.setAbsoluteTolerance(this.reflectorTolerance.get());
+    visionXPIDController.setSetpoint(this.SETPOINT);
     visionXPIDController.setOutputRange(-1, 1);
     visionXPIDController.setInputRange(-1, 1);
     visionXPIDController.enable();
-    // pid controller for the y axis
-    visionYPIDController = new VisionPIDController(this.YkP.get(), this.YkI.get(), this.YkD.get(), visionYPIDSource,
-        (output) -> y = output);
-    visionYPIDController.setAbsoluteTolerance(this.yTolerance.get());
-    visionYPIDController.setSetpoint(this.Y_SETPOINT);
-    visionYPIDController.setOutputRange(-1, 1);
-    visionYPIDController.setInputRange(-1, 1);
-    visionYPIDController.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     // if no direction is received, the driveTrain is controlled by the joystick
-    if (x == 9999 || y == 9999) {
+    if (x == 9999) {
       double y = -xbox.getY(Hand.kLeft);
       Robot.driveTrain.arcadeDrive(xbox.getX(Hand.kLeft), y, Math.abs(y) <= 0.50);
     } else {
-      Robot.driveTrain.arcadeDrive(x, -y, Math.abs(y) <= 0.50);
+      double y = -xbox.getY(Hand.kLeft);
+      Robot.driveTrain.arcadeDrive(x, y, Math.abs(y) <= 0.50);
     }
   }
 
@@ -105,8 +87,6 @@ public class TrackVisionTarget extends Command {
   @Override
   protected void interrupted() {
     visionXPIDController.disable();
-    visionYPIDController.disable();
     visionXPIDController.close();
-    visionYPIDController.close();
   }
 }
