@@ -15,6 +15,7 @@ public class PathfinderConstants {
     public static final int TicksPerRevolution = 360;
     public static final double WheelDiameter = 15.24;
     public static final double MaxVelocity = 4;
+    /**Pathweaver(motion profiling) path names*/
     public static enum pathName{
         kPathBottomRight("PathBottomRight"),
         kPathBottomMiddle("PathBottomMiddle"),
