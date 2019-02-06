@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.TrackReflector;
+// import frc.robot.commands.TrackReflector;
 import frc.robot.commands.TrackVisionTarget;
 import frc.robot.commands.VisionPIDSource;
 
@@ -32,7 +32,7 @@ public class OI {
     this.XButton = new JoystickButton(this.xbox, 3);
     AButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kHatch, this.xbox));
     BButton.whileHeld(new TrackVisionTarget(VisionPIDSource.VisionTarget.kCargo, this.xbox));
-    XButton.whileHeld(new TrackReflector(this.xbox));
+    //Button.whileHeld(new TrackReflector(this.xbox));
   }
   public double getX(){
     return xbox.getX(Hand.kLeft);

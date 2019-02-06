@@ -34,7 +34,7 @@ public class TrackReflector extends Command {
   private double x;
 
   public TrackReflector(XboxController xbox) {
-    this.target = VisionPIDSource.VisionTarget.kRetroflector;
+    this.target = VisionPIDSource.VisionTarget.kReflector;
     this.xbox = xbox;
     requires(Robot.driveTrain);
   }

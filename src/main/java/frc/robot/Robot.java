@@ -8,9 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -44,10 +47,16 @@ public class Robot extends TimedRobot {
       new VictorSP(RobotMap.BACK_LEFT_MOTOR),new VictorSP(RobotMap.FRONT_LEFT_MOTOR), 
       new VictorSP(RobotMap.BACK_RIGHT_MOTOR),new VictorSP(RobotMap.FRONT_RIGHT_MOTOR), 
       new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B), 
-      new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B));
+      new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B),
+      new ADXRS450_Gyro(Port.kOnboardCS0));
+    
     m_oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
     this.dbc = new DashBoardController();
+    dbc.addNumber("Right Encoder Distance", driveTrain::encRightTicks);
+    dbc.addNumber("Left Encoder Distance", driveTrain::encLeftTicks);
+    dbc.addNumber("Gyro", driveTrain::getAngle);
+    dbc.addBoolean("isSwitch", driveTrain::getSwitch);
     CameraServer.getInstance().startAutomaticCapture();
   }
 
@@ -62,7 +71,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     this.dbc.update();
-    
   }
 
   /**

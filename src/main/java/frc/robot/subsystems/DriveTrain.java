@@ -7,6 +7,10 @@
 
 package frc.robot.subsystems ;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -20,22 +24,25 @@ public class DriveTrain extends Subsystem {
   public SpeedController backLeftMotor, frontLeftMotor, backRightMotor, frontRightMotor;
   Encoder encoderRight, encoderLeft;
   DifferentialDrive differentialDrive;
+  DigitalInput Switch;
+ private ADXRS450_Gyro gyro;
 
 public DriveTrain(
   SpeedController rightBack, SpeedController rightFront, 
   SpeedController leftBack, SpeedController leftFront, 
-  Encoder encoderRight, Encoder encoderLeft) {
+  Encoder encoderRight, Encoder encoderLeft,ADXRS450_Gyro /*AnalogGyro*/ gyro) {
   this.backRightMotor = rightBack;
   this.frontRightMotor = rightFront;
   this.backLeftMotor = leftBack;
   this.frontLeftMotor = leftFront;
   this.encoderRight = encoderRight;
   this.encoderLeft  = encoderLeft;
-
+  this.gyro = gyro;
+  gyro.calibrate();
+  this.Switch = new DigitalInput(4);
   SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(backRightMotor, frontRightMotor);
   SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(backLeftMotor, frontLeftMotor);
   this.differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
- // this.gyro = gyro;
 
 
 }
@@ -48,11 +55,11 @@ public DriveTrain(
   }
 
   public double encRightTicks(){
-    return encoderRight.get();
+    return encoderRight.getDistance();
   }
 
   public double encLeftTicks(){
-    return encoderLeft.get();
+    return encoderLeft.getRate();
   }
 
   @Override
@@ -60,4 +67,14 @@ public DriveTrain(
     setDefaultCommand(new DriveJoystick(Robot.m_oi.xbox));
   }
 
+  public double getAngle(){
+    return this.gyro.getAngle();
+  }
+  public boolean isAlive(){
+    return this.gyro.isConnected();
+  }
+
+  public boolean getSwitch(){
+    return this.Switch.get();
+  }
 }
