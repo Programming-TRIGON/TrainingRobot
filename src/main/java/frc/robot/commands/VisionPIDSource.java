@@ -12,7 +12,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionPIDSource implements PIDSource {
     private VisionTarget target;
@@ -24,7 +23,7 @@ public class VisionPIDSource implements PIDSource {
         this.target = target;
         this.type = type;
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        // TODO: find which table we are using to upload vision target dircetions
+       
         NetworkTable targetTable = inst.getTable("SmartDashboard");
         this.visionEntry = targetTable.getEntry(target.key);
     }
